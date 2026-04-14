@@ -366,3 +366,28 @@ footer {
         gap: 0.5rem;
     }
 }
+
+.proposal-with-map {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+    margin-top: 2rem;
+}
+
+.proposal-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.proposal-map {
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 968px) {
+    .proposal-with-map {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
