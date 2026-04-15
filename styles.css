@@ -312,7 +312,7 @@ footer {
 
 .event-card .date {
     font-weight: bold;
-    color: #333;
+    color: #333 !important;
     font-size: 1.1rem;
 }
 
