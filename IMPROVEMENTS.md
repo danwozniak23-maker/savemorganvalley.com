@@ -17,6 +17,23 @@
 
 ---
 
+## Social Media Links
+
+**YouTube:**
+- Handle: @savemorganvalley
+- Channel URL: https://www.youtube.com/playlist?list=PLs7IqK5dKawFixNJEgPJyQYDrErWB6Oen
+
+**Instagram:**
+- Handle: @savemorganvalley
+
+**X/Twitter:**
+- Handle: @savemorganvally (note: missing 'e' in valley due to handle length limitation)
+
+**Facebook:**
+- Group URL: https://www.facebook.com/groups/citizensagainstmorganvalleypowerplant
+
+---
+
 ## Page-Specific Improvements
 
 ### Homepage (index.html / hometest.html)
@@ -31,6 +48,9 @@
 
 **Future Improvements:**
 - Make Social more prominent
+- Incorporate Logo on homepage and potentially Footer
+- Add Tagline of "Make Your Voice Heard"
+- Rework the home page content
 
 ---
 
@@ -80,6 +100,8 @@
 - Legal documents
 - News articles
 - Community resources
+- Add Letter of Opposition from Atkins
+- Add Ordinance of Opposition from Fairfax
 
 ---
 
@@ -89,7 +111,7 @@
 - Basic contact info
 
 **Future Improvements:**
-- Add local officials contact information
+- Add local officials contact information (reference: Contacts for Representatives.xlsx)
 - County supervisors
 - State representatives
 - Alliant Energy contact
