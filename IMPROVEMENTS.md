@@ -30,7 +30,7 @@
 - Call-to-action buttons
 
 **Future Improvements:**
-- 
+- Make Social more prominent
 
 ---
 
