@@ -9,17 +9,6 @@
 
 ---
 
-## Future Considerations
-
-### Forms & Data Collection
-- **Contact/Volunteer Form** - Consider Google Forms (unlimited, free) or Formspree ($10/month for 1,000 submissions)
-  - Expected volume: 50+ submissions per day
-  - Google Forms recommended for high volume
-  - Can embed on site with custom styling around it
-  - Decision: On hold for now
-
----
-
 ## Notes & Ideas
 *Add your notes below as we discuss improvements*
 
@@ -117,6 +106,17 @@
 ✅ Map added next to proposal text on homepage
 ✅ Events banner added to homepage
 ✅ Staging page (hometest.html) created for testing changes
+
+---
+
+## Future Considerations
+
+### Forms & Data Collection
+- **Contact/Volunteer Form** - Consider Google Forms (unlimited, free) or Formspree ($10/month for 1,000 submissions)
+  - Expected volume: 50+ submissions per day
+  - Google Forms recommended for high volume
+  - Can embed on site with custom styling around it
+  - Decision: On hold for now
 
 ---
 
