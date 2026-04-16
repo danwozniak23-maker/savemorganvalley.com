@@ -28,6 +28,86 @@
 
 ---
 
+## Page-Specific Improvements
+
+### Homepage (index.html / hometest.html)
+**Current Status:**
+- Hero image with kids playing in dirt
+- "SAVE MORGAN VALLEY" with orange underline
+- Events banner at top
+- Map showing 10-mile impact area
+- What's Being Proposed section
+- Why This Matters section
+- Call-to-action buttons
+
+**Future Improvements:**
+- 
+
+---
+
+### Calendar Page (calendar.html)
+**Current Status:**
+- Events organized by date
+- Format: Time | City | Park
+- Gray boxes with black text
+- Orange date headings
+
+**Future Improvements:**
+- 
+
+---
+
+### IUC Instructions Page (iuc-instructions.html)
+**Current Status:**
+- Step-by-step instructions for filing IUC comment
+- Docket number: GCU-2026-0002
+- Link to efs.iowa.gov
+- Help contact information
+
+**Future Improvements:**
+- 
+
+---
+
+### Petition Page (petition.html)
+**Current Status:**
+- Full petition text
+- List of concerns
+- How to sign information
+- Links to calendar events
+
+**Future Improvements:**
+- 
+
+---
+
+### Information Page (information.html)
+**Current Status:**
+- Placeholder page
+
+**Future Improvements:**
+- Add detailed information about the power plant
+- Environmental impact studies
+- Legal documents
+- News articles
+- Community resources
+
+---
+
+### Contacts Page (contacts.html)
+**Current Status:**
+- Placeholder page
+- Basic contact info
+
+**Future Improvements:**
+- Add local officials contact information
+- County supervisors
+- State representatives
+- Alliant Energy contact
+- Community organizers
+
+---
+
 ## Completed Improvements
 ✅ Changed email addresses to savemorganvalley@gmail.com
 ✅ Calendar events reorganized by date (Time | City | Park format)
