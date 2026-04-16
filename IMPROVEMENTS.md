@@ -1,4 +1,4 @@
-# Save Morgan Valley Website - Improvements & Future Considerations
+# Save Morgan Valley Website - Improvements & To-Do List
 
 ## Current Status
 ✅ Site is live at savemorganvalley.com
@@ -9,11 +9,38 @@
 
 ---
 
-## Notes & Ideas
-*Add your notes below as we discuss improvements*
+## To-Do List
 
-### User Notes:
-- 
+### Homepage (index.html / hometest.html)
+- [ ] Make Social more prominent
+- [ ] Incorporate Logo on homepage and potentially Footer
+- [ ] Add Tagline of "Make Your Voice Heard"
+- [ ] Rework the home page content
+
+### IUC Instructions Page (iuc-instructions.html)
+- [ ] Expand on the IUC page with more detailed instructions
+
+### Information Page (information.html)
+- [ ] Add detailed information about the power plant
+- [ ] Add environmental impact studies
+- [ ] Add legal documents
+- [ ] Add news articles
+- [ ] Add community resources
+- [ ] Add Letter of Opposition from Atkins
+- [ ] Add Ordinance of Opposition from Fairfax
+
+### Contacts Page (contacts.html)
+- [ ] Add local officials contact information (reference: Contacts for Representatives.xlsx)
+- [ ] Add county supervisors
+- [ ] Add state representatives
+- [ ] Add Alliant Energy contact
+- [ ] Add community organizers
+
+### Calendar Page (calendar.html)
+- No changes needed currently
+
+### Petition Page (petition.html)
+- No changes needed currently
 
 ---
 
@@ -34,88 +61,11 @@
 
 ---
 
-## Page-Specific Improvements
-
-### Homepage (index.html / hometest.html)
-**Current Status:**
-- Hero image with kids playing in dirt
-- "SAVE MORGAN VALLEY" with orange underline
-- Events banner at top
-- Map showing 10-mile impact area
-- What's Being Proposed section
-- Why This Matters section
-- Call-to-action buttons
-
-**Future Improvements:**
-- Make Social more prominent
-- Incorporate Logo on homepage and potentially Footer
-- Add Tagline of "Make Your Voice Heard"
-- Rework the home page content
-
----
-
-### Calendar Page (calendar.html)
-**Current Status:**
-- Events organized by date
-- Format: Time | City | Park
-- Gray boxes with black text
-- Orange date headings
-
-**Future Improvements:**
-- 
-
----
-
-### IUC Instructions Page (iuc-instructions.html)
-**Current Status:**
-- Step-by-step instructions for filing IUC comment
-- Docket number: GCU-2026-0002
-- Link to efs.iowa.gov
-- Help contact information
-
-**Future Improvements:**
-- Expand on the IUC page with more detailed instructions
-
----
-
-### Petition Page (petition.html)
-**Current Status:**
-- Full petition text
-- List of concerns
-- How to sign information
-- Links to calendar events
-
-**Future Improvements:**
-- 
-
----
-
-### Information Page (information.html)
-**Current Status:**
-- Placeholder page
-
-**Future Improvements:**
-- Add detailed information about the power plant
-- Environmental impact studies
-- Legal documents
-- News articles
-- Community resources
-- Add Letter of Opposition from Atkins
-- Add Ordinance of Opposition from Fairfax
-
----
-
-### Contacts Page (contacts.html)
-**Current Status:**
-- Placeholder page
-- Basic contact info
-
-**Future Improvements:**
-- Add local officials contact information (reference: Contacts for Representatives.xlsx)
-- County supervisors
-- State representatives
-- Alliant Energy contact
-- Community organizers
+## Reference Files
+- `Contacts for Representatives.xlsx` - Contact information for officials
+- `Letter of Opposition to Proposed Morgan Valley Energy Center Project.docx` - Atkins letter
+- Ordinance of Opposition from Fairfax (need file)
+- Logo file (need file)
 
 ---
 
