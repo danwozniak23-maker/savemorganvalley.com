@@ -74,7 +74,7 @@
 - Help contact information
 
 **Future Improvements:**
-- 
+- Expand on the IUC page with more detailed instructions
 
 ---
 
