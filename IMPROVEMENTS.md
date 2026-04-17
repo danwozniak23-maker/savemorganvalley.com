@@ -13,7 +13,6 @@
 
 ### Homepage (index.html / hometest.html)
 - ✅ Make Social more prominent
-- [ ] Incorporate Logo on homepage and potentially Footer
 - ✅ Add Tagline of "Make Your Voice Heard"
 - ✅ Rework the home page content
 
