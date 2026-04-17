@@ -13,7 +13,8 @@
         <nav>
             <div class="container">
                 <h1><a href="index.html" style="color: white; text-decoration: none;">Save Morgan Valley</a></h1>
-                <ul class="nav-links">
+                <button class="mobile-menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">☰</button>
+                <ul class="nav-links" id="navLinks">
                     <li><a href="index.html">Home</a></li>
                     <li><a href="iuc-instructions.html">IUC Info</a></li>
                     <li><a href="petition.html">Petition</a></li>
@@ -26,6 +27,8 @@
             </div>
         </nav>
     </header>
+
+    <script src="mobile-menu.js"></script>
 
     <!-- UPCOMING EVENTS BANNER -->
     <div style="background: #ff6b35; color: white; padding: 1.5rem 0; text-align: center; border-bottom: 3px solid #d45a2a;">
