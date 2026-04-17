@@ -140,6 +140,10 @@ header h1 {
     color: #ff6b35;
 }
 
+.section h2.centered {
+    text-align: center;
+}
+
 .section p {
     font-size: 1.1rem;
     margin-bottom: 1rem;
@@ -417,23 +421,23 @@ footer {
     flex-direction: column;
     align-items: center;
     gap: 0.75rem;
+    transition: transform 0.3s, opacity 0.3s;
+}
+
+.social-icon-wrapper:hover {
+    transform: translateY(-5px);
+    opacity: 0.8;
 }
 
 .social-icon-link {
     display: block;
-    transition: transform 0.3s, opacity 0.3s;
-}
-
-.social-icon-link:hover {
-    transform: translateY(-5px);
-    opacity: 0.8;
 }
 
 .social-icon-link svg {
     transition: fill 0.3s;
 }
 
-.social-icon-link:hover svg {
+.social-icon-wrapper:hover .social-icon-link svg {
     fill: #d45a2a;
 }
 
