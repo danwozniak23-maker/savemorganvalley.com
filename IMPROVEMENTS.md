@@ -12,10 +12,10 @@
 ## To-Do List
 
 ### Homepage (index.html / hometest.html)
-- [ ] Make Social more prominent
+- ✅ Make Social more prominent
 - [ ] Incorporate Logo on homepage and potentially Footer
-- [ ] Add Tagline of "Make Your Voice Heard"
-- [x] Rework the home page content
+- ✅ Add Tagline of "Make Your Voice Heard"
+- ✅ Rework the home page content
 
 ### IUC Instructions Page (iuc-instructions.html)
 - [ ] Expand on the IUC page with more detailed instructions
