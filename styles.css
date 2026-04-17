@@ -63,6 +63,12 @@ header h1 {
     padding: 0.5rem;
 }
 
+@media (min-width: 769px) {
+    .nav-links {
+        display: flex !important;
+    }
+}
+
 @media (max-width: 768px) {
     .nav-links {
         display: none;
