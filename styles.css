@@ -126,6 +126,22 @@ header h1 {
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
+.jump-link-button {
+    background: #ff6b35;
+    color: white;
+    padding: 1rem 2rem;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: inline-block;
+}
+
+.jump-link-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
 .section {
     padding: 4rem 0;
 }
