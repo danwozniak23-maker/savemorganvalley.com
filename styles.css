@@ -407,45 +407,49 @@ footer {
 .social-icons {
     display: flex;
     justify-content: center;
-    gap: 3rem;
+    gap: 4rem;
     flex-wrap: wrap;
     margin-top: 2rem;
 }
 
-.social-icon {
+.social-icon-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
-    text-decoration: none;
-    color: #ff6b35;
+    gap: 0.75rem;
+}
+
+.social-icon-link {
+    display: block;
     transition: transform 0.3s, opacity 0.3s;
 }
 
-.social-icon:hover {
+.social-icon-link:hover {
     transform: translateY(-5px);
     opacity: 0.8;
 }
 
-.social-icon svg {
+.social-icon-link svg {
     transition: fill 0.3s;
 }
 
-.social-icon:hover svg {
+.social-icon-link:hover svg {
     fill: #d45a2a;
 }
 
-.social-icon span {
+.social-label {
     font-size: 1rem;
     font-weight: 600;
+    color: #333;
+    pointer-events: none;
 }
 
 @media (max-width: 768px) {
     .social-icons {
-        gap: 2rem;
+        gap: 2.5rem;
     }
     
-    .social-icon svg {
+    .social-icon-link svg {
         width: 40px;
         height: 40px;
     }
