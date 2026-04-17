@@ -28,10 +28,10 @@
 - [ ] Add Letter of Opposition from Atkins
 - [ ] Add Ordinance of Opposition from Fairfax
 
-### Contacts Page (contacts.html)
-- [ ] Add local officials contact information (reference: Contacts for Representatives.xlsx)
-- [ ] Add county supervisors
-- [ ] Add state representatives
+### Representatives Page (representatives.html)
+- ✅ Add local officials contact information (reference: Contacts for Representatives.xlsx)
+- ✅ Add county supervisors
+- ✅ Add state representatives
 - [ ] Add Alliant Energy contact
 - [ ] Add community organizers
 
