@@ -49,7 +49,7 @@
     <div style="background: #ff6b35; color: white; padding: 1.5rem 0; text-align: center; border-bottom: 3px solid #d45a2a;">
         <div class="container">
             <h3 style="color: white; margin: 0 0 0.5rem 0; font-size: 1.3rem;">📅 Upcoming Meet in the Park Petition Signing Events</h3>
-            <div style="overflow: hidden; position: relative; height: 30px;">
+            <div id="tickerContainer" style="overflow: hidden; position: relative; height: 30px;">
                 <div id="eventTicker" style="transition: transform 0.5s ease-in-out;">
                     <!-- Events will be dynamically inserted here -->
                 </div>
@@ -96,11 +96,23 @@
 
                 // Create all event items
                 let eventHTML = '';
+                const isMobile = window.innerWidth <= 768;
+                
                 upcomingEvents.forEach(event => {
                     const [year, month, day] = event.date.split('-').map(Number);
                     const eventDate = new Date(year, month - 1, day);
                     const dateStr = eventDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-                    eventHTML += `<div style="font-size: 1.1rem; line-height: 30px; height: 30px;"><strong>${dateStr}</strong> ${event.time} | ${event.location}</div>`;
+                    
+                    if (isMobile) {
+                        // Mobile: Two lines
+                        eventHTML += `<div style="font-size: 0.95rem; line-height: 1.3; height: 50px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0 0.5rem;">
+                            <div><strong>${dateStr}</strong></div>
+                            <div>${event.time} | ${event.location}</div>
+                        </div>`;
+                    } else {
+                        // Desktop: One line
+                        eventHTML += `<div style="font-size: 1.1rem; line-height: 30px; height: 30px;"><strong>${dateStr}</strong> ${event.time} | ${event.location}</div>`;
+                    }
                 });
                 
                 ticker.innerHTML = eventHTML;
@@ -112,10 +124,13 @@
             function startRotation() {
                 if (upcomingEvents.length <= 1) return;
                 
+                const isMobile = window.innerWidth <= 768;
+                const itemHeight = isMobile ? 50 : 30;
+                
                 setInterval(() => {
                     currentIndex = (currentIndex + 1) % upcomingEvents.length;
                     const ticker = document.getElementById('eventTicker');
-                    ticker.style.transform = `translateY(-${currentIndex * 30}px)`;
+                    ticker.style.transform = `translateY(-${currentIndex * itemHeight}px)`;
                 }, 3000); // Change event every 3 seconds
             }
 

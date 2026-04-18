@@ -610,3 +610,21 @@ a .concern-card:hover {
         height: 40px;
     }
 }
+
+/* Event Ticker Mobile Styles */
+@media (max-width: 768px) {
+    #tickerContainer {
+        height: 50px !important; /* Taller for two lines */
+    }
+    
+    #eventTicker > div {
+        height: 50px !important;
+        line-height: 1.3 !important;
+        font-size: 0.95rem !important;
+        padding: 0 0.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
