@@ -342,6 +342,16 @@ footer {
     margin-top: 2rem;
 }
 
+.concerns-grid > a {
+    display: flex;
+}
+
+.concerns-grid > a > .concern-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
 @media (max-width: 1200px) {
     .concerns-grid {
         grid-template-columns: repeat(2, 1fr);
