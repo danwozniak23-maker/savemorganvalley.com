@@ -47,11 +47,77 @@
     <div style="background: #ff6b35; color: white; padding: 1.5rem 0; text-align: center; border-bottom: 3px solid #d45a2a;">
         <div class="container">
             <h3 style="color: white; margin: 0 0 0.5rem 0; font-size: 1.3rem;">📅 Upcoming Meet in the Park Petition Signing Events</h3>
-            <p style="margin: 0; font-size: 1.1rem;">
-                <strong>This Weekend:</strong> April 18-19 | Atkins, Cedar Rapids & Fairfax
-                <a href="calendar.html" style="color: white; text-decoration: underline; margin-left: 1rem; font-weight: bold;">View Full Calendar →</a>
-            </p>
+            <div style="overflow: hidden; position: relative; height: 30px;">
+                <div id="eventTicker" style="transition: transform 0.5s ease-in-out;">
+                    <!-- Events will be dynamically inserted here -->
+                </div>
+            </div>
+            <a href="calendar.html" style="color: white; text-decoration: underline; margin-top: 0.5rem; display: inline-block; font-weight: bold;">View Full Calendar →</a>
         </div>
+        <script>
+            // Event data with dates
+            const events = [
+                { date: '2026-04-18', time: '12pm-2pm', location: 'Atkins City Park' },
+                { date: '2026-04-18', time: '12pm-2pm', location: 'Morgan Creek Park, Cedar Rapids' },
+                { date: '2026-04-18', time: '3pm-5pm', location: 'Fairfax Complex' },
+                { date: '2026-04-19', time: '12pm-2pm', location: 'Heartland Heights Park, Fairfax' },
+                { date: '2026-04-19', time: '2pm-4pm', location: 'Atkins City Park' },
+                { date: '2026-04-19', time: '2pm-4pm', location: 'Morgan Creek Park, Cedar Rapids' },
+                { date: '2026-04-21', time: '6pm-8pm', location: 'Atkins City Park' },
+                { date: '2026-04-21', time: '6pm-8pm', location: 'Morgan Creek Park, Cedar Rapids' },
+                { date: '2026-04-22', time: '6pm-8pm', location: 'Fairfax Complex' },
+                { date: '2026-04-23', time: '6pm-8pm', location: 'Atkins City Park' },
+                { date: '2026-04-23', time: '6pm-8pm', location: 'Morgan Creek Park, Cedar Rapids' },
+                { date: '2026-04-25', time: '12pm-2pm', location: 'Hawks Ridge Park, Fairfax' }
+            ];
+
+            let currentIndex = 0;
+            let upcomingEvents = [];
+
+            function updateEventTicker() {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                // Filter upcoming events
+                upcomingEvents = events.filter(event => {
+                    const eventDate = new Date(event.date);
+                    return eventDate >= today;
+                });
+
+                const ticker = document.getElementById('eventTicker');
+                
+                if (upcomingEvents.length === 0) {
+                    ticker.innerHTML = '<div style="font-size: 1.1rem; line-height: 30px;">Check back soon for new event dates!</div>';
+                    return;
+                }
+
+                // Create all event items
+                let eventHTML = '';
+                upcomingEvents.forEach(event => {
+                    const eventDate = new Date(event.date);
+                    const dateStr = eventDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+                    eventHTML += `<div style="font-size: 1.1rem; line-height: 30px; height: 30px;"><strong>${dateStr}</strong> ${event.time} | ${event.location}</div>`;
+                });
+                
+                ticker.innerHTML = eventHTML;
+                
+                // Start rotation
+                startRotation();
+            }
+
+            function startRotation() {
+                if (upcomingEvents.length <= 1) return;
+                
+                setInterval(() => {
+                    currentIndex = (currentIndex + 1) % upcomingEvents.length;
+                    const ticker = document.getElementById('eventTicker');
+                    ticker.style.transform = `translateY(-${currentIndex * 30}px)`;
+                }, 3000); // Change event every 3 seconds
+            }
+
+            // Update on page load
+            updateEventTicker();
+        </script>
     </div>
 
     <main>
