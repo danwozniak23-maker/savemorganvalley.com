@@ -120,11 +120,68 @@
     <main>
         <section class="hero-image">
             <div class="hero-overlay">
-                <div class="container" style="text-align: center;">
+                <!-- Animated smog layers -->
+                <div class="smog-layer smog-1"></div>
+                <div class="smog-layer smog-2"></div>
+                <div class="smog-layer smog-3"></div>
+                <div class="container" style="text-align: center; position: relative; z-index: 2;">
                     <h2 class="hero-title">SAVE MORGAN VALLEY<span class="orange-underline"></span></h2>
                 </div>
             </div>
         </section>
+        
+        <style>
+            .smog-layer {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 200%;
+                height: 100%;
+                pointer-events: none;
+                opacity: 0.4;
+            }
+            
+            .smog-1 {
+                background: linear-gradient(90deg, 
+                    transparent 0%, 
+                    rgba(169, 169, 169, 0.3) 25%, 
+                    rgba(128, 128, 128, 0.4) 50%, 
+                    rgba(169, 169, 169, 0.3) 75%, 
+                    transparent 100%);
+                animation: driftSmog 20s linear infinite;
+            }
+            
+            .smog-2 {
+                background: linear-gradient(90deg, 
+                    transparent 0%, 
+                    rgba(192, 192, 192, 0.2) 30%, 
+                    rgba(160, 160, 160, 0.35) 60%, 
+                    rgba(192, 192, 192, 0.2) 90%, 
+                    transparent 100%);
+                animation: driftSmog 30s linear infinite;
+                animation-delay: -10s;
+            }
+            
+            .smog-3 {
+                background: linear-gradient(90deg, 
+                    transparent 0%, 
+                    rgba(211, 211, 211, 0.25) 20%, 
+                    rgba(169, 169, 169, 0.3) 40%, 
+                    rgba(211, 211, 211, 0.25) 80%, 
+                    transparent 100%);
+                animation: driftSmog 25s linear infinite;
+                animation-delay: -5s;
+            }
+            
+            @keyframes driftSmog {
+                0% {
+                    transform: translateX(-50%);
+                }
+                100% {
+                    transform: translateX(0%);
+                }
+            }
+        </style>
 
         <section id="about" class="section">
             <div class="container">
