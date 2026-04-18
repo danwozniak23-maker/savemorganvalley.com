@@ -337,7 +337,7 @@ footer {
 
 .concerns-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
     margin-top: 2rem;
 }
@@ -363,14 +363,14 @@ footer {
 }
 
 .concern-card h3 {
-    color: #ff6b35;
+    color: #333;
     margin-bottom: 1rem;
-    font-size: 1.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
 }
 
 .concern-card ul {
-    list-style: none;
-    padding: 0;
+    padding-left: 1.5rem;
 }
 
 .concern-card li {
