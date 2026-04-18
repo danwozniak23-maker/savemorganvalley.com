@@ -92,7 +92,7 @@
                 let eventHTML = '';
                 upcomingEvents.forEach(event => {
                     const eventDate = new Date(event.date);
-                    const dateStr = eventDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    const dateStr = eventDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
                     eventHTML += `<div style="font-size: 1.1rem; line-height: 30px; height: 30px;"><strong>${dateStr}</strong> ${event.time} | ${event.location}</div>`;
                 });
                 
