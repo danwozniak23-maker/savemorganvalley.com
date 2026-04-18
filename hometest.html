@@ -233,7 +233,7 @@
     
     <script>
         // Initialize the map
-        var map = L.map('map').setView([41.9773, -91.5658], 11);
+        var map = L.map('map').setView([41.95, -91.87], 11);
         
         // Add OpenStreetMap tiles
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -241,8 +241,8 @@
             maxZoom: 19
         }).addTo(map);
         
-        // Proposed plant location (Hwy 30 and Linn-Benton Road)
-        var plantLocation = [41.9773, -91.5658];
+        // Proposed plant location (south of Hwy 30, east of Linn-Benton Road)
+        var plantLocation = [41.945, -91.865];
         
         // Add red marker for proposed plant
         var plantMarker = L.marker(plantLocation, {
