@@ -337,7 +337,7 @@ footer {
 
 .concerns-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
     margin-top: 2rem;
 }
@@ -354,6 +354,26 @@ footer {
     }
 }
 
+/* Petition page specific grid - 3 columns */
+.petition-concerns-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+@media (max-width: 1200px) {
+    .petition-concerns-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .petition-concerns-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 .concern-card {
     background: white;
     padding: 2rem;
@@ -363,18 +383,35 @@ footer {
 }
 
 .concern-card h3 {
-    color: #333;
+    color: #ff6b35;
     margin-bottom: 1rem;
-    font-size: 1.1rem;
-    font-weight: bold;
+    font-size: 1.5rem;
 }
 
 .concern-card ul {
-    padding-left: 1.5rem;
+    list-style: none;
+    padding: 0;
 }
 
 .concern-card li {
     padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* Petition page specific concern card styling */
+.petition-concerns-grid .concern-card h3 {
+    color: #333;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.petition-concerns-grid .concern-card ul {
+    list-style: disc;
+    padding-left: 1.5rem;
+}
+
+.petition-concerns-grid .concern-card li {
+    border-bottom: none;
 }
 
 .concern-card li:last-child {
