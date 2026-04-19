@@ -632,9 +632,9 @@ a .concern-card:hover {
 
 /* Fix Leaflet map zoom controls z-index */
 .leaflet-control-zoom {
-    z-index: 10 !important;
+    z-index: 500 !important;
 }
 
 .leaflet-top, .leaflet-bottom {
-    z-index: 10 !important;
+    z-index: 500 !important;
 }
