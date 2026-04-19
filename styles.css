@@ -403,6 +403,7 @@ a .concern-card:hover {
     color: #ff6b35;
     margin-bottom: 1rem;
     font-size: 1.5rem;
+    text-align: center;
 }
 
 .concern-card ul {
