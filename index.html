@@ -49,102 +49,10 @@
 
     <script src="mobile-menu.js"></script>
 
-    <!-- UPCOMING EVENTS BANNER -->
-    <div style="background: #ff6b35; color: white; padding: 1.5rem 0; text-align: center; border-bottom: 3px solid #d45a2a; margin-top: -2rem;">
-        <div class="container">
-            <h3 style="color: white; margin: 0 0 0.5rem 0; font-size: 1.3rem;">📅 Upcoming Meet in the Park Petition Signing Events</h3>
-            <div id="tickerContainer" style="overflow: hidden; position: relative; height: 30px;">
-                <div id="eventTicker" style="transition: transform 0.5s ease-in-out;">
-                    <!-- Events will be dynamically inserted here -->
-                </div>
-            </div>
-            <a href="calendar.html" style="color: white; text-decoration: underline; margin-top: 0.5rem; display: inline-block; font-weight: bold;">View Full Calendar →</a>
-        </div>
-        <script>
-            // Event data with dates - Updated May 11, 2026
-            const events = [
-                { date: '2026-05-16', time: '9am-12pm', location: 'Fairfax City-Wide Garage Sales (506 Williams Blvd & 210 Ridge View Dr)' },
-                { date: '2026-05-17', time: '2pm-4pm', location: 'Prairie Hill Elementary parking lot, Cedar Rapids' },
-                { date: '2026-05-19', time: '6pm-7pm', location: 'Prairie Hill Elementary parking lot, Cedar Rapids' },
-                { date: '2026-05-21', time: '6pm-7pm', location: 'Prairie Hill Elementary parking lot, Cedar Rapids' },
-                { date: '2026-05-31', time: '2pm-4pm', location: 'Seminole Valley Park, Cedar Rapids' },
-                { date: '2026-06-02', time: '6pm-7pm', location: 'Seminole Valley Park, Cedar Rapids' },
-                { date: '2026-06-04', time: '6pm-7pm', location: 'Seminole Valley Park, Cedar Rapids' },
-                { date: '2026-06-07', time: '2pm-4pm', location: 'Cherry Hill Park, Cedar Rapids' },
-                { date: '2026-06-09', time: '6pm-7pm', location: 'Cherry Hill Park, Cedar Rapids' },
-                { date: '2026-06-11', time: '6pm-7pm', location: 'Cherry Hill Park, Cedar Rapids' }
-            ];
-
-            let currentIndex = 0;
-            let upcomingEvents = [];
-
-            function updateEventTicker() {
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                
-                // Filter upcoming events
-                upcomingEvents = events.filter(event => {
-                    const [year, month, day] = event.date.split('-').map(Number);
-                    const eventDate = new Date(year, month - 1, day);
-                    return eventDate >= today;
-                });
-
-                const ticker = document.getElementById('eventTicker');
-                
-                if (upcomingEvents.length === 0) {
-                    ticker.innerHTML = '<div style="font-size: 1.1rem; line-height: 30px;">Check back soon for new event dates!</div>';
-                    return;
-                }
-
-                // Create all event items
-                let eventHTML = '';
-                const isMobile = window.innerWidth <= 768;
-                
-                upcomingEvents.forEach(event => {
-                    const [year, month, day] = event.date.split('-').map(Number);
-                    const eventDate = new Date(year, month - 1, day);
-                    const dateStr = eventDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-                    
-                    if (isMobile) {
-                        // Mobile: Two lines
-                        eventHTML += `<div style="font-size: 0.95rem; line-height: 1.3; height: 50px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0 0.5rem;">
-                            <div><strong>${dateStr}</strong></div>
-                            <div>${event.time} | ${event.location}</div>
-                        </div>`;
-                    } else {
-                        // Desktop: One line
-                        eventHTML += `<div style="font-size: 1.1rem; line-height: 30px; height: 30px;"><strong>${dateStr}</strong> ${event.time} | ${event.location}</div>`;
-                    }
-                });
-                
-                ticker.innerHTML = eventHTML;
-                
-                // Start rotation
-                startRotation();
-            }
-
-            function startRotation() {
-                if (upcomingEvents.length <= 1) return;
-                
-                const isMobile = window.innerWidth <= 768;
-                const itemHeight = isMobile ? 50 : 30;
-                
-                setInterval(() => {
-                    currentIndex = (currentIndex + 1) % upcomingEvents.length;
-                    const ticker = document.getElementById('eventTicker');
-                    ticker.style.transform = `translateY(-${currentIndex * itemHeight}px)`;
-                }, 3000); // Change event every 3 seconds
-            }
-
-            // Update on page load
-            updateEventTicker();
-        </script>
-    </div>
-
     <main>
         <section class="hero-image">
             <div class="hero-overlay" style="background: rgba(0, 0, 0, 0.7);">
-                <div class="container" style="display: flex; align-items: center; justify-content: space-between; gap: 3rem; padding: 4rem 1rem; flex-wrap: wrap;">
+                <div class="container" style="display: flex; align-items: center; justify-content: space-between; gap: 3rem; padding: 2.5rem 1rem; flex-wrap: wrap;">
                     <!-- Left side: Text content -->
                     <div style="flex: 1; min-width: 300px; color: white;">
                         <h2 style="color: white; font-size: 2.5rem; font-weight: bold; margin-bottom: 1.5rem; line-height: 1.2;">Stop the Morgan Valley Gas Plant Threatening Our Health and Livelihood</h2>
@@ -178,6 +86,98 @@
                 </div>
             </div>
         </section>
+
+        <!-- UPCOMING EVENTS BANNER -->
+        <div style="background: #ff6b35; color: white; padding: 1.5rem 0; text-align: center; border-bottom: 3px solid #d45a2a;">
+            <div class="container">
+                <h3 style="color: white; margin: 0 0 0.5rem 0; font-size: 1.3rem;">📅 Upcoming Meet in the Park Petition Signing Events</h3>
+                <div id="tickerContainer" style="overflow: hidden; position: relative; height: 30px;">
+                    <div id="eventTicker" style="transition: transform 0.5s ease-in-out;">
+                        <!-- Events will be dynamically inserted here -->
+                    </div>
+                </div>
+                <a href="calendar.html" style="color: white; text-decoration: underline; margin-top: 0.5rem; display: inline-block; font-weight: bold;">View Full Calendar →</a>
+            </div>
+            <script>
+                // Event data with dates - Updated May 11, 2026
+                const events = [
+                    { date: '2026-05-16', time: '9am-12pm', location: 'Fairfax City-Wide Garage Sales (506 Williams Blvd & 210 Ridge View Dr)' },
+                    { date: '2026-05-17', time: '2pm-4pm', location: 'Prairie Hill Elementary parking lot, Cedar Rapids' },
+                    { date: '2026-05-19', time: '6pm-7pm', location: 'Prairie Hill Elementary parking lot, Cedar Rapids' },
+                    { date: '2026-05-21', time: '6pm-7pm', location: 'Prairie Hill Elementary parking lot, Cedar Rapids' },
+                    { date: '2026-05-31', time: '2pm-4pm', location: 'Seminole Valley Park, Cedar Rapids' },
+                    { date: '2026-06-02', time: '6pm-7pm', location: 'Seminole Valley Park, Cedar Rapids' },
+                    { date: '2026-06-04', time: '6pm-7pm', location: 'Seminole Valley Park, Cedar Rapids' },
+                    { date: '2026-06-07', time: '2pm-4pm', location: 'Cherry Hill Park, Cedar Rapids' },
+                    { date: '2026-06-09', time: '6pm-7pm', location: 'Cherry Hill Park, Cedar Rapids' },
+                    { date: '2026-06-11', time: '6pm-7pm', location: 'Cherry Hill Park, Cedar Rapids' }
+                ];
+
+                let currentIndex = 0;
+                let upcomingEvents = [];
+
+                function updateEventTicker() {
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    
+                    // Filter upcoming events
+                    upcomingEvents = events.filter(event => {
+                        const [year, month, day] = event.date.split('-').map(Number);
+                        const eventDate = new Date(year, month - 1, day);
+                        return eventDate >= today;
+                    });
+
+                    const ticker = document.getElementById('eventTicker');
+                    
+                    if (upcomingEvents.length === 0) {
+                        ticker.innerHTML = '<div style="font-size: 1.1rem; line-height: 30px;">Check back soon for new event dates!</div>';
+                        return;
+                    }
+
+                    // Create all event items
+                    let eventHTML = '';
+                    const isMobile = window.innerWidth <= 768;
+                    
+                    upcomingEvents.forEach(event => {
+                        const [year, month, day] = event.date.split('-').map(Number);
+                        const eventDate = new Date(year, month - 1, day);
+                        const dateStr = eventDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+                        
+                        if (isMobile) {
+                            // Mobile: Two lines
+                            eventHTML += `<div style="font-size: 0.95rem; line-height: 1.3; height: 50px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0 0.5rem;">
+                                <div><strong>${dateStr}</strong></div>
+                                <div>${event.time} | ${event.location}</div>
+                            </div>`;
+                        } else {
+                            // Desktop: One line
+                            eventHTML += `<div style="font-size: 1.1rem; line-height: 30px; height: 30px;"><strong>${dateStr}</strong> ${event.time} | ${event.location}</div>`;
+                        }
+                    });
+                    
+                    ticker.innerHTML = eventHTML;
+                    
+                    // Start rotation
+                    startRotation();
+                }
+
+                function startRotation() {
+                    if (upcomingEvents.length <= 1) return;
+                    
+                    const isMobile = window.innerWidth <= 768;
+                    const itemHeight = isMobile ? 50 : 30;
+                    
+                    setInterval(() => {
+                        currentIndex = (currentIndex + 1) % upcomingEvents.length;
+                        const ticker = document.getElementById('eventTicker');
+                        ticker.style.transform = `translateY(-${currentIndex * itemHeight}px)`;
+                    }, 3000); // Change event every 3 seconds
+                }
+
+                // Update on page load
+                updateEventTicker();
+            </script>
+        </div>
 
         <section id="about" class="section">
             <div class="container">
