@@ -145,83 +145,93 @@
                     </div>
 
                     <!-- Wind Widget -->
-                    <div style="margin: 2rem 0; padding: 2rem; background: #f9f9f9; border-radius: 8px;">
-                        <h4 style="color: #ff6b35; text-align: center; margin-bottom: 1rem;">Live Wind Conditions at Proposed Site</h4>
-                        <p style="text-align: center; margin-bottom: 1.5rem; color: #666;">See current wind patterns that would carry emissions from the plant to surrounding communities.</p>
+                    <div style="margin: 2rem 0; padding: 1.5rem; background: #f9f9f9; border-radius: 8px;">
+                        <h4 style="color: #ff6b35; text-align: center; margin-bottom: 0.5rem;">Live Wind Conditions at Proposed Site</h4>
+                        <p style="text-align: center; margin-bottom: 1.5rem; color: #666; font-size: 0.95rem;">See current wind patterns that would carry emissions from the plant to surrounding communities.</p>
                         
                         <div style="display: flex; justify-content: center;">
-                            <div class="wind-widget" id="wind-widget" style="background: linear-gradient(145deg, #1a2a3a, #0f1f2e); border: 1px solid #2a4a6a; border-radius: 20px; padding: 28px 32px; width: 320px; box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05); color: #e0eeff;">
-                                <div style="font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: #5b9bd5; margin-bottom: 4px;">Wind Conditions</div>
-                                <div style="font-size: 12px; color: #4a7090; margin-bottom: 24px;">Linn-Benton Rd & Hwy 30</div>
+                            <div class="wind-widget" id="wind-widget" style="background: white; border: 2px solid #ff6b35; border-radius: 12px; padding: 20px 24px; width: 460px; max-width: 100%; box-shadow: 0 4px 12px rgba(255, 107, 53, 0.15); color: #333;">
+                                <div style="font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: #ff6b35; margin-bottom: 2px;">Wind Conditions</div>
+                                <div style="font-size: 11px; color: #666; margin-bottom: 16px;">Linn-Benton Rd & Hwy 30</div>
 
-                                <div style="display: flex; justify-content: center; margin-bottom: 24px;">
-                                    <svg class="compass" id="compass" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" style="width: 160px; height: 160px;">
-                                        <circle cx="80" cy="80" r="76" fill="none" stroke="#1e3a55" stroke-width="1.5"/>
-                                        <circle cx="80" cy="80" r="68" fill="none" stroke="#152e44" stroke-width="0.5"/>
-                                        <g stroke="#2a5a80" stroke-width="1.5">
-                                            <line x1="80" y1="4" x2="80" y2="16"/>
-                                            <line x1="80" y1="144" x2="80" y2="156"/>
-                                            <line x1="4" y1="80" x2="16" y2="80"/>
-                                            <line x1="144" y1="80" x2="156" y2="80"/>
-                                        </g>
-                                        <g stroke="#1e3a55" stroke-width="1">
-                                            <line x1="134.1" y1="25.9" x2="126.8" y2="33.2"/>
-                                            <line x1="25.9" y1="25.9" x2="33.2" y2="33.2"/>
-                                            <line x1="25.9" y1="134.1" x2="33.2" y2="126.8"/>
-                                            <line x1="134.1" y1="134.1" x2="126.8" y2="126.8"/>
-                                        </g>
-                                        <text x="80" y="15" text-anchor="middle" fill="#e05555" font-size="11" font-weight="700" font-family="'Segoe UI',sans-serif">N</text>
-                                        <text x="80" y="153" text-anchor="middle" fill="#4a7090" font-size="11" font-weight="600" font-family="'Segoe UI',sans-serif">S</text>
-                                        <text x="152" y="84" text-anchor="middle" fill="#4a7090" font-size="11" font-weight="600" font-family="'Segoe UI',sans-serif">E</text>
-                                        <text x="8" y="84" text-anchor="middle" fill="#4a7090" font-size="11" font-weight="600" font-family="'Segoe UI',sans-serif">W</text>
-                                        <g stroke="#1e3a55" stroke-width="0.8">
-                                            <line x1="80" y1="4" x2="80" y2="10" transform="rotate(30 80 80)"/>
-                                            <line x1="80" y1="4" x2="80" y2="10" transform="rotate(60 80 80)"/>
-                                            <line x1="80" y1="4" x2="80" y2="10" transform="rotate(90 80 80)"/>
-                                            <line x1="80" y1="4" x2="80" y2="10" transform="rotate(120 80 80)"/>
-                                            <line x1="80" y1="4" x2="80" y2="10" transform="rotate(150 80 80)"/>
-                                            <line x1="80" y1="4" x2="80" y2="10" transform="rotate(210 80 80)"/>
-                                            <line x1="80" y1="4" x2="80" y2="10" transform="rotate(240 80 80)"/>
-                                            <line x1="80" y1="4" x2="80" y2="10" transform="rotate(270 80 80)"/>
-                                            <line x1="80" y1="4" x2="80" y2="10" transform="rotate(300 80 80)"/>
-                                            <line x1="80" y1="4" x2="80" y2="10" transform="rotate(330 80 80)"/>
-                                        </g>
-                                        <g id="wind-arrow" transform="rotate(0 80 80)">
-                                            <line x1="80" y1="28" x2="80" y2="110" stroke="#5bc8f5" stroke-width="3" stroke-linecap="round"/>
-                                            <polygon points="80,115 73,100 87,100" fill="#5bc8f5"/>
-                                            <line x1="80" y1="28" x2="70" y2="44" stroke="#5bc8f5" stroke-width="2" stroke-linecap="round"/>
-                                            <line x1="80" y1="34" x2="70" y2="48" stroke="#5bc8f5" stroke-width="2" stroke-linecap="round"/>
-                                        </g>
-                                        <circle cx="80" cy="80" r="5" fill="#0f1923" stroke="#5bc8f5" stroke-width="1.5"/>
-                                    </svg>
+                                <div style="display: flex; gap: 20px; align-items: center; margin-bottom: 14px;">
+                                    <div style="flex-shrink: 0;">
+                                        <svg class="compass" id="compass" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" style="width: 170px; height: 170px;">
+                                            <circle cx="80" cy="80" r="76" fill="none" stroke="#ff6b35" stroke-width="2"/>
+                                            <circle cx="80" cy="80" r="68" fill="none" stroke="#ffb399" stroke-width="0.5"/>
+                                            <g stroke="#ff6b35" stroke-width="2">
+                                                <line x1="80" y1="4" x2="80" y2="16"/>
+                                                <line x1="80" y1="144" x2="80" y2="156"/>
+                                                <line x1="4" y1="80" x2="16" y2="80"/>
+                                                <line x1="144" y1="80" x2="156" y2="80"/>
+                                            </g>
+                                            <g stroke="#ff6b35" stroke-width="1">
+                                                <line x1="134.1" y1="25.9" x2="126.8" y2="33.2"/>
+                                                <line x1="25.9" y1="25.9" x2="33.2" y2="33.2"/>
+                                                <line x1="25.9" y1="134.1" x2="33.2" y2="126.8"/>
+                                                <line x1="134.1" y1="134.1" x2="126.8" y2="126.8"/>
+                                            </g>
+                                            <text x="80" y="15" text-anchor="middle" fill="#ff0000" font-size="12" font-weight="700" font-family="'Segoe UI',sans-serif">N</text>
+                                            <text x="80" y="153" text-anchor="middle" fill="#666" font-size="11" font-weight="600" font-family="'Segoe UI',sans-serif">S</text>
+                                            <text x="152" y="84" text-anchor="middle" fill="#666" font-size="11" font-weight="600" font-family="'Segoe UI',sans-serif">E</text>
+                                            <text x="8" y="84" text-anchor="middle" fill="#666" font-size="11" font-weight="600" font-family="'Segoe UI',sans-serif">W</text>
+                                            <g stroke="#ffb399" stroke-width="1">
+                                                <line x1="80" y1="4" x2="80" y2="10" transform="rotate(30 80 80)"/>
+                                                <line x1="80" y1="4" x2="80" y2="10" transform="rotate(60 80 80)"/>
+                                                <line x1="80" y1="4" x2="80" y2="10" transform="rotate(90 80 80)"/>
+                                                <line x1="80" y1="4" x2="80" y2="10" transform="rotate(120 80 80)"/>
+                                                <line x1="80" y1="4" x2="80" y2="10" transform="rotate(150 80 80)"/>
+                                                <line x1="80" y1="4" x2="80" y2="10" transform="rotate(210 80 80)"/>
+                                                <line x1="80" y1="4" x2="80" y2="10" transform="rotate(240 80 80)"/>
+                                                <line x1="80" y1="4" x2="80" y2="10" transform="rotate(270 80 80)"/>
+                                                <line x1="80" y1="4" x2="80" y2="10" transform="rotate(300 80 80)"/>
+                                                <line x1="80" y1="4" x2="80" y2="10" transform="rotate(330 80 80)"/>
+                                            </g>
+                                            <g id="wind-arrow" transform="rotate(0 80 80)">
+                                                <line x1="80" y1="28" x2="80" y2="110" stroke="#ff6b35" stroke-width="3" stroke-linecap="round"/>
+                                                <polygon points="80,115 73,100 87,100" fill="#ff6b35"/>
+                                                <line x1="80" y1="28" x2="70" y2="44" stroke="#ff6b35" stroke-width="2" stroke-linecap="round"/>
+                                                <line x1="80" y1="34" x2="70" y2="48" stroke="#ff6b35" stroke-width="2" stroke-linecap="round"/>
+                                            </g>
+                                            <circle cx="80" cy="80" r="5" fill="white" stroke="#ff6b35" stroke-width="2"/>
+                                        </svg>
+                                    </div>
+
+                                    <div style="flex: 1; display: flex; flex-direction: column; gap: 10px;">
+                                        <div style="font-size: 20px; font-weight: 700; color: #ff6b35; text-align: center; letter-spacing: 1px; margin-bottom: 4px;" id="dir-label">— —</div>
+
+                                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                                            <div style="background: #fff3cd; border: 1px solid #ff6b35; border-radius: 8px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center;">
+                                                <div style="font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #666; font-weight: 600;">Speed</div>
+                                                <div style="display: flex; align-items: baseline; gap: 4px;">
+                                                    <div style="font-size: 26px; font-weight: 700; color: #ff6b35; line-height: 1;" id="speed">—</div>
+                                                    <div style="font-size: 11px; color: #666; font-weight: 500;">mph</div>
+                                                </div>
+                                            </div>
+                                            <div style="background: #fff3cd; border: 1px solid #ff6b35; border-radius: 8px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center;">
+                                                <div style="font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #666; font-weight: 600;">Gusts</div>
+                                                <div style="display: flex; align-items: baseline; gap: 4px;">
+                                                    <div style="font-size: 26px; font-weight: 700; color: #ff6b35; line-height: 1;" id="gusts">—</div>
+                                                    <div style="font-size: 11px; color: #666; font-weight: 500;">mph</div>
+                                                </div>
+                                            </div>
+                                            <div style="background: #fff3cd; border: 1px solid #ff6b35; border-radius: 8px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center;">
+                                                <div style="font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: #666; font-weight: 600;">Direction</div>
+                                                <div style="display: flex; align-items: baseline; gap: 4px;">
+                                                    <div style="font-size: 22px; font-weight: 700; color: #ff6b35; line-height: 1;" id="degrees">—°</div>
+                                                    <div style="font-size: 11px; color: #666; font-weight: 500;">true</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div style="font-size: 18px; font-weight: 700; color: #5bc8f5; text-align: center; margin-bottom: 20px; letter-spacing: 2px;" id="dir-label">— —</div>
-
-                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px;">
-                                    <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(91,155,213,0.2); border-radius: 10px; padding: 10px 8px; text-align: center;">
-                                        <div style="font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #4a7090; margin-bottom: 5px;">Speed</div>
-                                        <div style="font-size: 22px; font-weight: 700; color: #e0eeff; line-height: 1;" id="speed">—</div>
-                                        <div style="font-size: 9px; color: #4a7090; margin-top: 2px;">mph</div>
-                                    </div>
-                                    <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(91,155,213,0.2); border-radius: 10px; padding: 10px 8px; text-align: center;">
-                                        <div style="font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #4a7090; margin-bottom: 5px;">Gusts</div>
-                                        <div style="font-size: 22px; font-weight: 700; color: #e0eeff; line-height: 1;" id="gusts">—</div>
-                                        <div style="font-size: 9px; color: #4a7090; margin-top: 2px;">mph</div>
-                                    </div>
-                                    <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(91,155,213,0.2); border-radius: 10px; padding: 10px 8px; text-align: center;">
-                                        <div style="font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #4a7090; margin-bottom: 5px;">From</div>
-                                        <div style="font-size: 18px; font-weight: 700; color: #e0eeff; line-height: 1;" id="degrees">—°</div>
-                                        <div style="font-size: 9px; color: #4a7090; margin-top: 2px;">true</div>
-                                    </div>
-                                </div>
-
-                                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: #3a5a7a; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 14px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: #999; border-top: 1px solid #e0e0e0; padding-top: 12px;">
                                     <div>
-                                        <span id="dot" style="width: 6px; height: 6px; border-radius: 50%; background: #3a5a7a; display: inline-block; margin-right: 5px; vertical-align: middle;"></span>
+                                        <span id="dot" style="width: 6px; height: 6px; border-radius: 50%; background: #ccc; display: inline-block; margin-right: 5px; vertical-align: middle;"></span>
                                         <span id="updated">Loading…</span>
                                     </div>
-                                    <button onclick="fetchWind()" style="background: none; border: none; color: #3a5a7a; cursor: pointer; font-size: 14px; padding: 2px 6px; border-radius: 4px;" onmouseover="this.style.color='#5b9bd5'" onmouseout="this.style.color='#3a5a7a'">&#8635;</button>
+                                    <button onclick="fetchWind()" style="background: none; border: none; color: #999; cursor: pointer; font-size: 14px; padding: 2px 6px; border-radius: 4px;" onmouseover="this.style.color='#ff6b35'" onmouseout="this.style.color='#999'">&#8635;</button>
                                 </div>
                             </div>
                         </div>
@@ -245,7 +255,7 @@
                     async function fetchWind() {
                         const dot = document.getElementById('dot');
                         const updated = document.getElementById('updated');
-                        dot.style.background = '#3a5a7a';
+                        dot.style.background = '#ccc';
                         updated.textContent = 'Updating…';
 
                         const url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=wind_speed_10m,wind_direction_10m,wind_gusts_10m&wind_speed_unit=mph&timezone=America%2FChicago`;
@@ -270,11 +280,11 @@
                             const now = new Date();
                             const time = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZoneName: 'short' });
                             updated.textContent = `Updated ${time}`;
-                            dot.style.background = '#4ecdc4';
-                            dot.style.boxShadow = '0 0 6px #4ecdc4';
+                            dot.style.background = '#28a745';
+                            dot.style.boxShadow = '0 0 6px #28a745';
                         } catch (err) {
                             updated.textContent = 'Error — retry?';
-                            dot.style.background = '#e74c3c';
+                            dot.style.background = '#dc3545';
                             console.error(err);
                         }
                     }
