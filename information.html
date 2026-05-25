@@ -134,6 +134,90 @@
                         <li style="margin-bottom: 1rem;"><strong>Linked to asthma, cancer, and other respiratory issues</strong> - Air pollutants from power plants are associated with increased rates of asthma, cancer, bronchitis, and other respiratory conditions, particularly in children and elderly residents.</li>
                         <li style="margin-bottom: 1rem;"><strong>Impacts nearby and downwind communities most</strong> - Communities closest to the plant and those downwind will experience the highest exposure to emissions, creating environmental justice concerns.</li>
                     </ul>
+
+                    <!-- Wind Widget -->
+                    <div style="margin: 2rem 0; padding: 2rem; background: #f9f9f9; border-radius: 8px;">
+                        <h4 style="color: #ff6b35; text-align: center; margin-bottom: 1rem;">Live Wind Conditions at Proposed Site</h4>
+                        <p style="text-align: center; margin-bottom: 1.5rem; color: #666;">See current wind patterns that would carry emissions from the plant to surrounding communities.</p>
+                        
+                        <div style="display: flex; justify-content: center;">
+                            <div class="wind-widget" id="wind-widget" style="background: linear-gradient(145deg, #1a2a3a, #0f1f2e); border: 1px solid #2a4a6a; border-radius: 20px; padding: 28px 32px; width: 320px; box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05); color: #e0eeff;">
+                                <div style="font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: #5b9bd5; margin-bottom: 4px;">Wind Conditions</div>
+                                <div style="font-size: 12px; color: #4a7090; margin-bottom: 24px;">Linn-Benton Rd & Hwy 30</div>
+
+                                <div style="display: flex; justify-content: center; margin-bottom: 24px;">
+                                    <svg class="compass" id="compass" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" style="width: 160px; height: 160px;">
+                                        <circle cx="80" cy="80" r="76" fill="none" stroke="#1e3a55" stroke-width="1.5"/>
+                                        <circle cx="80" cy="80" r="68" fill="none" stroke="#152e44" stroke-width="0.5"/>
+                                        <g stroke="#2a5a80" stroke-width="1.5">
+                                            <line x1="80" y1="4" x2="80" y2="16"/>
+                                            <line x1="80" y1="144" x2="80" y2="156"/>
+                                            <line x1="4" y1="80" x2="16" y2="80"/>
+                                            <line x1="144" y1="80" x2="156" y2="80"/>
+                                        </g>
+                                        <g stroke="#1e3a55" stroke-width="1">
+                                            <line x1="134.1" y1="25.9" x2="126.8" y2="33.2"/>
+                                            <line x1="25.9" y1="25.9" x2="33.2" y2="33.2"/>
+                                            <line x1="25.9" y1="134.1" x2="33.2" y2="126.8"/>
+                                            <line x1="134.1" y1="134.1" x2="126.8" y2="126.8"/>
+                                        </g>
+                                        <text x="80" y="15" text-anchor="middle" fill="#e05555" font-size="11" font-weight="700" font-family="'Segoe UI',sans-serif">N</text>
+                                        <text x="80" y="153" text-anchor="middle" fill="#4a7090" font-size="11" font-weight="600" font-family="'Segoe UI',sans-serif">S</text>
+                                        <text x="152" y="84" text-anchor="middle" fill="#4a7090" font-size="11" font-weight="600" font-family="'Segoe UI',sans-serif">E</text>
+                                        <text x="8" y="84" text-anchor="middle" fill="#4a7090" font-size="11" font-weight="600" font-family="'Segoe UI',sans-serif">W</text>
+                                        <g stroke="#1e3a55" stroke-width="0.8">
+                                            <line x1="80" y1="4" x2="80" y2="10" transform="rotate(30 80 80)"/>
+                                            <line x1="80" y1="4" x2="80" y2="10" transform="rotate(60 80 80)"/>
+                                            <line x1="80" y1="4" x2="80" y2="10" transform="rotate(90 80 80)"/>
+                                            <line x1="80" y1="4" x2="80" y2="10" transform="rotate(120 80 80)"/>
+                                            <line x1="80" y1="4" x2="80" y2="10" transform="rotate(150 80 80)"/>
+                                            <line x1="80" y1="4" x2="80" y2="10" transform="rotate(210 80 80)"/>
+                                            <line x1="80" y1="4" x2="80" y2="10" transform="rotate(240 80 80)"/>
+                                            <line x1="80" y1="4" x2="80" y2="10" transform="rotate(270 80 80)"/>
+                                            <line x1="80" y1="4" x2="80" y2="10" transform="rotate(300 80 80)"/>
+                                            <line x1="80" y1="4" x2="80" y2="10" transform="rotate(330 80 80)"/>
+                                        </g>
+                                        <g id="wind-arrow" transform="rotate(0 80 80)">
+                                            <line x1="80" y1="28" x2="80" y2="110" stroke="#5bc8f5" stroke-width="3" stroke-linecap="round"/>
+                                            <polygon points="80,115 73,100 87,100" fill="#5bc8f5"/>
+                                            <line x1="80" y1="28" x2="70" y2="44" stroke="#5bc8f5" stroke-width="2" stroke-linecap="round"/>
+                                            <line x1="80" y1="34" x2="70" y2="48" stroke="#5bc8f5" stroke-width="2" stroke-linecap="round"/>
+                                        </g>
+                                        <circle cx="80" cy="80" r="5" fill="#0f1923" stroke="#5bc8f5" stroke-width="1.5"/>
+                                    </svg>
+                                </div>
+
+                                <div style="font-size: 18px; font-weight: 700; color: #5bc8f5; text-align: center; margin-bottom: 20px; letter-spacing: 2px;" id="dir-label">— —</div>
+
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+                                    <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(91,155,213,0.2); border-radius: 10px; padding: 10px 8px; text-align: center;">
+                                        <div style="font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #4a7090; margin-bottom: 5px;">Speed</div>
+                                        <div style="font-size: 22px; font-weight: 700; color: #e0eeff; line-height: 1;" id="speed">—</div>
+                                        <div style="font-size: 9px; color: #4a7090; margin-top: 2px;">mph</div>
+                                    </div>
+                                    <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(91,155,213,0.2); border-radius: 10px; padding: 10px 8px; text-align: center;">
+                                        <div style="font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #4a7090; margin-bottom: 5px;">Gusts</div>
+                                        <div style="font-size: 22px; font-weight: 700; color: #e0eeff; line-height: 1;" id="gusts">—</div>
+                                        <div style="font-size: 9px; color: #4a7090; margin-top: 2px;">mph</div>
+                                    </div>
+                                    <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(91,155,213,0.2); border-radius: 10px; padding: 10px 8px; text-align: center;">
+                                        <div style="font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #4a7090; margin-bottom: 5px;">From</div>
+                                        <div style="font-size: 18px; font-weight: 700; color: #e0eeff; line-height: 1;" id="degrees">—°</div>
+                                        <div style="font-size: 9px; color: #4a7090; margin-top: 2px;">true</div>
+                                    </div>
+                                </div>
+
+                                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: #3a5a7a; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 14px;">
+                                    <div>
+                                        <span id="dot" style="width: 6px; height: 6px; border-radius: 50%; background: #3a5a7a; display: inline-block; margin-right: 5px; vertical-align: middle;"></span>
+                                        <span id="updated">Loading…</span>
+                                    </div>
+                                    <button onclick="fetchWind()" style="background: none; border: none; color: #3a5a7a; cursor: pointer; font-size: 14px; padding: 2px 6px; border-radius: 4px;" onmouseover="this.style.color='#5b9bd5'" onmouseout="this.style.color='#3a5a7a'">&#8635;</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div style="margin-top: 2rem; padding: 1.5rem; background: #f9f9f9; border-radius: 8px;">
                         <p style="font-weight: bold; margin-bottom: 1rem; color: #333;">Sources:</p>
                         <ul style="font-size: 1rem; line-height: 1.8; list-style: none; padding: 0;">
@@ -143,6 +227,61 @@
                         </ul>
                     </div>
                 </div>
+
+                <script>
+                    const LAT = 41.978;
+                    const LON = -91.905;
+                    const DIRECTIONS = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+
+                    function degreesToCompass(deg) {
+                        const idx = Math.round(deg / 22.5) % 16;
+                        return DIRECTIONS[idx];
+                    }
+
+                    function round1(n) {
+                        return Math.round(n * 10) / 10;
+                    }
+
+                    async function fetchWind() {
+                        const dot = document.getElementById('dot');
+                        const updated = document.getElementById('updated');
+                        dot.style.background = '#3a5a7a';
+                        updated.textContent = 'Updating…';
+
+                        const url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current=wind_speed_10m,wind_direction_10m,wind_gusts_10m&wind_speed_unit=mph&timezone=America%2FChicago`;
+
+                        try {
+                            const res = await fetch(url);
+                            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                            const data = await res.json();
+                            const c = data.current;
+
+                            const speed = round1(c.wind_speed_10m);
+                            const gusts = round1(c.wind_gusts_10m);
+                            const dir = Math.round(c.wind_direction_10m);
+                            const compass = degreesToCompass(dir);
+
+                            document.getElementById('speed').textContent = speed;
+                            document.getElementById('gusts').textContent = gusts;
+                            document.getElementById('degrees').textContent = dir + '°';
+                            document.getElementById('dir-label').textContent = `From ${compass}`;
+                            document.getElementById('wind-arrow').setAttribute('transform', `rotate(${dir} 80 80)`);
+
+                            const now = new Date();
+                            const time = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZoneName: 'short' });
+                            updated.textContent = `Updated ${time}`;
+                            dot.style.background = '#4ecdc4';
+                            dot.style.boxShadow = '0 0 6px #4ecdc4';
+                        } catch (err) {
+                            updated.textContent = 'Error — retry?';
+                            dot.style.background = '#e74c3c';
+                            console.error(err);
+                        }
+                    }
+
+                    fetchWind();
+                    setInterval(fetchWind, 10 * 60 * 1000);
+                </script>
 
                 <!-- Property & Land Section -->
                 <div id="property-land" class="info-box" style="margin: 3rem 0; scroll-margin-top: 100px;">
