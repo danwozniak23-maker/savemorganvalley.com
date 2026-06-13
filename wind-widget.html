@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wind Widget — Linn-Benton Rd & Hwy 30</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #0f1923;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    .widget {
+      background: linear-gradient(145deg, #1a2a3a, #0f1f2e);
+      border: 1px solid #2a4a6a;
+      border-radius: 20px;
+      padding: 28px 32px;
+      width: 320px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+      color: #e0eeff;
+    }
+
+    .location {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #5b9bd5;
+      margin-bottom: 4px;
+    }
+
+    .sublocation {
+      font-size: 12px;
+      color: #4a7090;
+      margin-bottom: 24px;
+    }
+
+    .compass-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .compass {
+      width: 160px;
+      height: 160px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(91,155,213,0.2);
+      border-radius: 10px;
+      padding: 10px 8px;
+      text-align: center;
+    }
+
+    .stat-label {
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #4a7090;
+      margin-bottom: 5px;
+    }
+
+    .stat-value {
+      font-size: 22px;
+      font-weight: 700;
+      color: #e0eeff;
+      line-height: 1;
+    }
+
+    .stat-unit {
+      font-size: 9px;
+      color: #4a7090;
+      margin-top: 2px;
+    }
+
+    .direction-label {
+      font-size: 18px;
+      font-weight: 700;
+      color: #5bc8f5;
+      text-align: center;
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+    }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 10px;
+      color: #3a5a7a;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: 14px;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #3a5a7a;
+      display: inline-block;
+      margin-right: 5px;
+      vertical-align: middle;
+      transition: background 0.4s;
+    }
+
+    .status-dot.live { background: #4ecdc4; box-shadow: 0 0 6px #4ecdc4; }
+    .status-dot.error { background: #e74c3c; }
+
+    .refresh-btn {
+      background: none;
+      border: none;
+      color: #3a5a7a;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: color 0.2s;
+    }
+
+    .refresh-btn:hover { color: #5b9bd5; }
+
+    .loading-overlay {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinning { animation: spin 1s linear infinite; }
+  </style>
+</head>
+<body>
+
+<div class="widget" id="widget">
+  <div class="location">Wind Conditions</div>
+  <div class="sublocation">Linn-Benton Rd &amp; Hwy 30 &mdash; West of Cedar Rapids, IA</div>
+
+  <div class="compass-wrap">
+    <svg class="compass" id="compass" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+      <!-- Outer ring -->
+      <circle cx="80" cy="80" r="76" fill="none" stroke="#1e3a55" stroke-width="1.5"/>
+      <circle cx="80" cy="80" r="68" fill="none" stroke="#152e44" stroke-width="0.5"/>
+
+      <!-- Cardinal tick marks -->
+      <g stroke="#2a5a80" stroke-width="1.5">
+        <line x1="80" y1="4" x2="80" y2="16"/>
+        <line x1="80" y1="144" x2="80" y2="156"/>
+        <line x1="4" y1="80" x2="16" y2="80"/>
+        <line x1="144" y1="80" x2="156" y2="80"/>
+      </g>
+      <!-- Intercardinal ticks -->
+      <g stroke="#1e3a55" stroke-width="1">
+        <line x1="134.1" y1="25.9" x2="126.8" y2="33.2"/>
+        <line x1="25.9" y1="25.9" x2="33.2" y2="33.2"/>
+        <line x1="25.9" y1="134.1" x2="33.2" y2="126.8"/>
+        <line x1="134.1" y1="134.1" x2="126.8" y2="126.8"/>
+      </g>
+
+      <!-- Cardinal labels -->
+      <text x="80" y="15" text-anchor="middle" fill="#e05555" font-size="11" font-weight="700" font-family="'Segoe UI',sans-serif">N</text>
+      <text x="80" y="153" text-anchor="middle" fill="#4a7090" font-size="11" font-weight="600" font-family="'Segoe UI',sans-serif">S</text>
+      <text x="152" y="84" text-anchor="middle" fill="#4a7090" font-size="11" font-weight="600" font-family="'Segoe UI',sans-serif">E</text>
+      <text x="8" y="84" text-anchor="middle" fill="#4a7090" font-size="11" font-weight="600" font-family="'Segoe UI',sans-serif">W</text>
+
+      <!-- Degree ring marks (every 30°) -->
+      <g stroke="#1e3a55" stroke-width="0.8">
+        <line x1="80" y1="4" x2="80" y2="10" transform="rotate(30 80 80)"/>
+        <line x1="80" y1="4" x2="80" y2="10" transform="rotate(60 80 80)"/>
+        <line x1="80" y1="4" x2="80" y2="10" transform="rotate(90 80 80)"/>
+        <line x1="80" y1="4" x2="80" y2="10" transform="rotate(120 80 80)"/>
+        <line x1="80" y1="4" x2="80" y2="10" transform="rotate(150 80 80)"/>
+        <line x1="80" y1="4" x2="80" y2="10" transform="rotate(210 80 80)"/>
+        <line x1="80" y1="4" x2="80" y2="10" transform="rotate(240 80 80)"/>
+        <line x1="80" y1="4" x2="80" y2="10" transform="rotate(270 80 80)"/>
+        <line x1="80" y1="4" x2="80" y2="10" transform="rotate(300 80 80)"/>
+        <line x1="80" y1="4" x2="80" y2="10" transform="rotate(330 80 80)"/>
+      </g>
+
+      <!-- Wind arrow group — rotates to show FROM direction -->
+      <g id="wind-arrow" transform="rotate(0 80 80)">
+        <!-- Arrow pointing down = wind coming from north -->
+        <!-- Shaft -->
+        <line x1="80" y1="28" x2="80" y2="110" stroke="#5bc8f5" stroke-width="3" stroke-linecap="round"/>
+        <!-- Arrowhead (pointing toward center = wind arriving here) -->
+        <polygon points="80,115 73,100 87,100" fill="#5bc8f5"/>
+        <!-- Tail feathers -->
+        <line x1="80" y1="28" x2="70" y2="44" stroke="#5bc8f5" stroke-width="2" stroke-linecap="round"/>
+        <line x1="80" y1="34" x2="70" y2="48" stroke="#5bc8f5" stroke-width="2" stroke-linecap="round"/>
+      </g>
+
+      <!-- Center dot -->
+      <circle cx="80" cy="80" r="5" fill="#0f1923" stroke="#5bc8f5" stroke-width="1.5"/>
+    </svg>
+  </div>
+
+  <div class="direction-label" id="dir-label">— —</div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Speed</div>
+      <div class="stat-value" id="speed">—</div>
+      <div class="stat-unit">mph</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Gusts</div>
+      <div class="stat-value" id="gusts">—</div>
+      <div class="stat-unit">mph</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">From</div>
+      <div class="stat-value" id="degrees" style="font-size:18px">—°</div>
+      <div class="stat-unit">true</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div>
+      <span class="status-dot" id="dot"></span>
+      <span id="updated">Loading…</span>
+    </div>
+    <button class="refresh-btn" id="refresh-btn" title="Refresh" onclick="fetchWind()">&#8635;</button>
+  </div>
+</div>
+
+<script>
+  // Approximate coords for Linn-Benton Rd & Hwy 30, west of Cedar Rapids, IA
+  // (near Linn/Benton county line along US-30)
+  const LAT = 41.978;
+  const LON = -91.905;
+
+  const DIRECTIONS = [
+    'N','NNE','NE','ENE','E','ESE','SE','SSE',
+    'S','SSW','SW','WSW','W','WNW','NW','NNW'
+  ];
+
+  function degreesToCompass(deg) {
+    const idx = Math.round(deg / 22.5) % 16;
+    return DIRECTIONS[idx];
+  }
+
+  function round1(n) {
+    return Math.round(n * 10) / 10;
+  }
+
+  async function fetchWind() {
+    const dot = document.getElementById('dot');
+    const updated = document.getElementById('updated');
+    const btn = document.getElementById('refresh-btn');
+
+    dot.className = 'status-dot';
+    updated.textContent = 'Updating…';
+    btn.classList.add('spinning');
+
+    const url =
+      `https://api.open-meteo.com/v1/forecast` +
+      `?latitude=${LAT}&longitude=${LON}` +
+      `&current=wind_speed_10m,wind_direction_10m,wind_gusts_10m` +
+      `&wind_speed_unit=mph` +
+      `&timezone=America%2FChicago`;
+
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      const c = data.current;
+
+      const speed = round1(c.wind_speed_10m);
+      const gusts = round1(c.wind_gusts_10m);
+      const dir   = Math.round(c.wind_direction_10m);
+      const compass = degreesToCompass(dir);
+
+      document.getElementById('speed').textContent   = speed;
+      document.getElementById('gusts').textContent   = gusts;
+      document.getElementById('degrees').textContent = dir + '°';
+      document.getElementById('dir-label').textContent = `From ${compass}`;
+
+      // Rotate arrow: arrow naturally points down (from N).
+      // Wind direction is WHERE wind comes FROM, so we rotate by that angle.
+      document.getElementById('wind-arrow').setAttribute(
+        'transform', `rotate(${dir} 80 80)`
+      );
+
+      const now = new Date();
+      const time = now.toLocaleTimeString('en-US', {
+        hour: 'numeric', minute: '2-digit', timeZoneName: 'short'
+      });
+      updated.textContent = `Updated ${time}`;
+      dot.className = 'status-dot live';
+
+    } catch (err) {
+      updated.textContent = 'Error — retry?';
+      dot.className = 'status-dot error';
+      console.error(err);
+    }
+
+    btn.classList.remove('spinning');
+  }
+
+  // Initial load
+  fetchWind();
+
+  // Auto-refresh every 10 minutes
+  setInterval(fetchWind, 10 * 60 * 1000);
+</script>
+
+</body>
+</html>
