@@ -183,6 +183,9 @@
   function init() {
     if (localStorage.getItem(TOUR_KEY)) return;
 
+    // Suppress on mobile
+    if (window.innerWidth < 768) return;
+
     const step = getCurrentStep();
     if (!step) return;
 
