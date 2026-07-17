@@ -148,13 +148,13 @@
 
     <footer>
         <div class="container">
-            <p>Save Morgan Valley | <a href="mailto:savemorganvalley@gmail.com" style="color: white;">savemorganvalley@gmail.com</a> | <a href="sms:319-538-7601" style="color: white;">319-538-7601</a></p>
+            <p>Save Morgan Valley | <a href="contact-us.html" style="color: white;">Contact Us</a> | <a href="sms:319-538-7601" style="color: white;">319-538-7601</a></p>
         </div>
     </footer>
 
     <script src="mobile-menu.js"></script>
     <script>
-        const SMV_FORM_URL = 'https://script.google.com/macros/s/AKfycbxo7zhckcd-mb9Ssgmq-zqn_LuetXysbqV7f0ijxs9ur3GRX925iU2UOEy0DSqV37nxgA/exec';
+        const SMV_FORM_URL = 'https://script.google.com/macros/s/AKfycbzn1gP_iLGh2uJpXfY250hwk4W0JOTUshOw78TpSGKO3iKcGlJyXBg5M3JlwLCGdS1D/exec';
         document.getElementById('volunteerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const btn = document.getElementById('vSubmitBtn');
@@ -163,6 +163,7 @@
             btn.textContent = 'Submitting...';
             status.style.display = 'none';
             const params = new URLSearchParams({
+                formType:  'volunteer',
                 firstName: document.getElementById('vFirstName').value.trim(),
                 lastName:  document.getElementById('vLastName').value.trim(),
                 email:     document.getElementById('vEmail').value.trim(),
