@@ -1,118 +1,130 @@
 /**
- * Save Morgan Valley - Guided Site Tour
- * Shows once per visitor (localStorage). Small floating card, lower-left.
- * Tour: Home > Petition > Calendar > Meetings > IUC > Donate > Info/FAQ > Social > Contact Us
+ * Save Morgan Valley - Spotlight Tour (v2)
+ * Runs on home page only. Highlights each nav item with a dark overlay.
+ * Shows once per visitor via localStorage.
+ * Suppressed on mobile (< 768px).
  */
 
 (function () {
   const TOUR_KEY = 'smv_tour_complete';
-  const TOTAL = 9;
 
   const steps = [
     {
-      pageMatch: ['/', '/index.html', ''],
+      navHref: null, // No nav highlight for welcome
       title: 'Welcome to Save Morgan Valley',
-      body: 'A 720MW natural gas power plant is proposed in our community. Let us show you around and how you can help.',
-      next: 'petition.html',
-      nextLabel: 'Next: Petition →',
-      index: 1
+      body: 'A 720MW natural gas power plant is proposed in our community. Let us show you what is available on this site and how you can help stop it.',
+      nextLabel: 'Next: Petition →'
     },
     {
-      pageMatch: ['/petition.html'],
-      title: '✍️ Sign the Petition',
-      body: 'Physical signatures carry real weight with decision-makers. Sign in person or have us come to you.',
-      next: 'calendar.html',
-      nextLabel: 'Next: Calendar →',
-      index: 2
+      navHref: 'petition.html',
+      title: '✍️ Petition',
+      body: 'Sign the physical petition against the plant. Physical signatures carry real weight with decision-makers.',
+      nextLabel: 'Next: Volunteer →'
     },
     {
-      pageMatch: ['/calendar.html'],
-      title: '📅 Upcoming Events',
+      navHref: 'volunteer.html',
+      title: '🤝 Volunteer',
+      body: 'Help with door-to-door outreach, event support, or other efforts to protect our community.',
+      nextLabel: 'Next: Info/FAQ →'
+    },
+    {
+      navHref: 'information.html',
+      title: '📋 Info/FAQ',
+      body: 'Get the facts: projected emissions, health impacts, property concerns, and answers to common questions about the plant.',
+      nextLabel: 'Next: Calendar →'
+    },
+    {
+      navHref: 'calendar.html',
+      title: '📅 Calendar',
       body: 'Come meet your neighbors at one of our petition signing events and show your support in person.',
-      next: 'meetings.html',
-      nextLabel: 'Next: Meetings →',
-      index: 3
+      nextLabel: 'Next: Meetings →'
     },
     {
-      pageMatch: ['/meetings.html'],
-      title: '🏛️ Meetings That Matter',
-      body: 'Show up to the government meetings where this project is being decided. Your presence is powerful.',
-      next: 'petition.html#iuc',
-      nextLabel: 'Next: File with the IUC →',
-      index: 4
+      navHref: 'meetings.html',
+      title: '🏛️ Meetings',
+      body: 'Upcoming government meetings where this project is being decided. Showing up sends a powerful message.',
+      nextLabel: 'Next: Representatives →'
     },
     {
-      pageMatch: ['/petition.html#iuc'],
-      title: '⚖️ File with the IUC',
-      body: 'Submit an official comment or objection to the Iowa Utilities Commission on Docket GCU-2026-0002. Your filing becomes part of the public record.',
-      next: 'index.html#donate',
-      nextLabel: 'Next: Donate →',
-      index: 5
+      navHref: 'representatives.html',
+      title: '📞 Representatives',
+      body: 'Contact your local, county, and state representatives directly. Let them know where you stand.',
+      nextLabel: 'Next: Social →'
     },
     {
-      pageMatch: ['/#donate', '/index.html#donate'],
-      title: '💚 Support the Cause',
-      body: 'Help fund yard signs, legal fees, and outreach to protect our community.',
-      next: 'information.html',
-      nextLabel: 'Next: Info/FAQ →',
-      index: 6
-    },
-    {
-      pageMatch: ['/information.html'],
-      title: '📋 Info & FAQ',
-      body: 'Get the facts: emissions data, health impacts, property concerns, and answers to common questions.',
-      next: 'social.html',
-      nextLabel: 'Next: Social →',
-      index: 7
-    },
-    {
-      pageMatch: ['/social.html'],
-      title: '📣 Follow & Share',
+      navHref: 'social.html',
+      title: '📣 Social',
       body: 'Follow us on social media and help spread the word to friends and neighbors.',
-      next: 'contact-us.html',
-      nextLabel: 'Next: Contact Us →',
-      index: 8
+      nextLabel: 'Next: Contact →'
     },
     {
-      pageMatch: ['/contact-us.html'],
-      title: '📬 Get in Touch',
-      body: 'Have questions or want to get involved? Reach out and we\'re here to help.',
-      next: 'index.html',
-      nextLabel: 'Done - Back to Home ✓',
-      index: 9
+      navHref: 'contact-us.html',
+      title: '📬 Contact',
+      body: 'Have questions or want to get more involved? Reach out and we are here to help.',
+      nextLabel: 'Done - Back to Top ✓'
     }
   ];
 
-  function getCurrentStep() {
-    const path = window.location.pathname;
-    const hash = window.location.hash;
+  let currentIndex = 0;
+  let overlay = null;
+  let card = null;
 
-    // Special hash cases
-    if ((path === '/' || path === '' || path.endsWith('index.html')) && hash === '#donate') {
-      return steps[5];
-    }
-    if (path.endsWith('petition.html') && hash === '#iuc') {
-      return steps[4];
-    }
-
-    for (const step of steps) {
-      for (const match of step.pageMatch) {
-        if (match.includes('#')) continue;
-        if (match === '' || match === '/') {
-          if (path === '/' || path === '' || (path.endsWith('/') && !path.endsWith('html'))) return step;
-        } else if (path.endsWith(match)) {
-          return step;
-        }
-      }
+  function getNavLink(href) {
+    if (!href) return null;
+    const links = document.querySelectorAll('#navLinks a');
+    for (const link of links) {
+      if (link.getAttribute('href') === href) return link;
     }
     return null;
   }
 
-  function createCard(step) {
+  function clearSpotlight() {
+    if (overlay) { overlay.remove(); overlay = null; }
+  }
+
+  function spotlightElement(el) {
+    clearSpotlight();
+    if (!el) return;
+
+    const rect = el.getBoundingClientRect();
+    const pad = 6;
+
+    overlay = document.createElement('div');
+    overlay.id = 'smv-spotlight';
+
+    // Full page dark overlay with a box-shadow cutout around the target
+    overlay.style.cssText = `
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      pointer-events: none;
+      box-shadow: 0 0 0 9999px rgba(0,0,0,0.65);
+      border-radius: 6px;
+      top: ${rect.top - pad + window.scrollY}px;
+      left: ${rect.left - pad}px;
+      width: ${rect.width + pad * 2}px;
+      height: ${rect.height + pad * 2}px;
+      outline: 3px solid #ff6b35;
+      outline-offset: 0px;
+      box-shadow: 0 0 0 9999px rgba(0,0,0,0.65), 0 0 0 3px #ff6b35;
+    `;
+
+    document.body.appendChild(overlay);
+  }
+
+  function createCard() {
     const existing = document.getElementById('smv-tour-card');
     if (existing) existing.remove();
 
-    const card = document.createElement('div');
+    const step = steps[currentIndex];
+    const total = steps.length;
+
+    const dots = steps.map((_, i) => {
+      const active = i === currentIndex;
+      return `<span style="display:inline-block;width:7px;height:7px;border-radius:50%;margin:0 2px;background:${active ? '#ff6b35' : '#e0e0e0'};"></span>`;
+    }).join('');
+
+    card = document.createElement('div');
     card.id = 'smv-tour-card';
     card.style.cssText = `
       position: fixed;
@@ -123,12 +135,75 @@
       border: 2px solid #ff6b35;
       border-radius: 12px;
       padding: 16px 18px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
       z-index: 9999;
       font-family: 'Segoe UI', system-ui, sans-serif;
       animation: smvSlideIn 0.3s ease;
     `;
 
+    card.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
+        <div style="font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#ff6b35;">Let us show you around</div>
+        <button id="smv-tour-skip" style="background:none;border:none;color:#999;cursor:pointer;font-size:18px;line-height:1;padding:0;margin-top:-2px;" title="Skip tour">×</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <div>${dots}</div>
+        <div style="font-size:11px;color:#aaa;">${currentIndex + 1} of ${total}</div>
+      </div>
+      <div style="font-weight:700;font-size:0.95rem;color:#333;margin-bottom:6px;">${step.title}</div>
+      <div style="font-size:0.85rem;color:#555;line-height:1.5;margin-bottom:14px;">${step.body}</div>
+      <button id="smv-tour-next" style="display:block;width:100%;background:#ff6b35;color:white;text-align:center;padding:9px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:bold;font-size:0.85rem;"
+        onmouseover="this.style.background='#e55a25'" onmouseout="this.style.background='#ff6b35'">
+        ${step.nextLabel}
+      </button>
+    `;
+
+    document.body.appendChild(card);
+
+    document.getElementById('smv-tour-skip').addEventListener('click', finish);
+
+    document.getElementById('smv-tour-next').addEventListener('click', function () {
+      currentIndex++;
+      if (currentIndex >= steps.length) {
+        finish();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        advance();
+      }
+    });
+  }
+
+  function advance() {
+    const step = steps[currentIndex];
+    const navEl = getNavLink(step.navHref);
+
+    if (navEl) {
+      navEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      setTimeout(() => {
+        spotlightElement(navEl);
+        createCard();
+      }, 150);
+    } else {
+      clearSpotlight();
+      createCard();
+    }
+  }
+
+  function finish() {
+    localStorage.setItem(TOUR_KEY, '1');
+    clearSpotlight();
+    if (card) { card.remove(); card = null; }
+  }
+
+  function init() {
+    if (localStorage.getItem(TOUR_KEY)) return;
+    if (window.innerWidth < 768) return;
+
+    // Only run on home page
+    const path = window.location.pathname;
+    if (!(path === '/' || path === '' || path.endsWith('index.html'))) return;
+
+    // Inject animation style
     const style = document.createElement('style');
     style.textContent = `
       @keyframes smvSlideIn {
@@ -138,77 +213,9 @@
     `;
     document.head.appendChild(style);
 
-    const dots = Array.from({ length: TOTAL }, (_, i) => {
-      const active = i + 1 === step.index;
-      return `<span style="display:inline-block;width:7px;height:7px;border-radius:50%;margin:0 2px;background:${active ? '#ff6b35' : '#e0e0e0'};"></span>`;
-    }).join('');
-
-    card.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
-        <div style="font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#ff6b35;">Let us show you around</div>
-        <button id="smv-tour-skip" style="background:none;border:none;color:#999;cursor:pointer;font-size:18px;line-height:1;padding:0;margin-top:-2px;" title="Skip tour">×</button>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-        <div>${dots}</div>
-        <div style="font-size:11px;color:#aaa;">${step.index} of ${TOTAL}</div>
-      </div>
-      <div style="font-weight:700;font-size:0.95rem;color:#333;margin-bottom:6px;">${step.title}</div>
-      <div style="font-size:0.85rem;color:#555;line-height:1.5;margin-bottom:14px;">${step.body}</div>
-      <a id="smv-tour-next" href="${step.next || '#'}" style="display:block;background:#ff6b35;color:white;text-align:center;padding:9px 12px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:0.85rem;"
-        onmouseover="this.style.background='#e55a25'" onmouseout="this.style.background='#ff6b35'">
-        ${step.nextLabel}
-      </a>
-    `;
-
-    document.body.appendChild(card);
-
-    document.getElementById('smv-tour-skip').addEventListener('click', function () {
-      localStorage.setItem(TOUR_KEY, '1');
-      card.remove();
-    });
-
-    document.getElementById('smv-tour-next').addEventListener('click', function (e) {
-      if (!step.next || step.next === 'index.html') {
-        if (step.next === 'index.html') {
-          localStorage.setItem(TOUR_KEY, '1');
-          // let the link navigate naturally
-        } else {
-          e.preventDefault();
-          localStorage.setItem(TOUR_KEY, '1');
-          card.remove();
-        }
-      } else if (step.next === 'index.html#donate') {
-        if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/') {
-          e.preventDefault();
-          card.remove();
-          setTimeout(() => {
-            const donate = document.getElementById('donate');
-            if (donate) donate.scrollIntoView({ behavior: 'smooth' });
-            setTimeout(() => createCard(steps[5]), 600);
-          }, 100);
-        }
-      } else if (step.next === 'petition.html#iuc') {
-        if (window.location.pathname.endsWith('petition.html')) {
-          e.preventDefault();
-          card.remove();
-          setTimeout(() => {
-            const iuc = document.getElementById('iuc');
-            if (iuc) iuc.scrollIntoView({ behavior: 'smooth' });
-            setTimeout(() => createCard(steps[4]), 600);
-          }, 100);
-        }
-      }
-    });
-  }
-
-  function init() {
-    if (localStorage.getItem(TOUR_KEY)) return;
-    if (window.innerWidth < 768) return;
-
-    const step = getCurrentStep();
-    if (!step) return;
-
-    setTimeout(() => createCard(step), 800);
+    setTimeout(() => {
+      advance();
+    }, 900);
   }
 
   if (document.readyState === 'loading') {
