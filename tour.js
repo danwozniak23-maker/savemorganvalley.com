@@ -119,21 +119,46 @@
 
   function updateSpotlightPosition() {
     if (!overlay || !currentSpotlightEl) return;
-    const rect = currentSpotlightEl.getBoundingClientRect();
+    const validEls = Array.isArray(currentSpotlightEl) ? currentSpotlightEl : [currentSpotlightEl];
     const pad = 6;
-    overlay.style.top = `${rect.top - pad}px`;
-    overlay.style.left = `${rect.left - pad}px`;
-    overlay.style.width = `${rect.width + pad * 2}px`;
-    overlay.style.height = `${rect.height + pad * 2}px`;
+    let top = Infinity, left = Infinity, right = -Infinity, bottom = -Infinity;
+    validEls.forEach(el => {
+      const r = el.getBoundingClientRect();
+      top = Math.min(top, r.top);
+      left = Math.min(left, r.left);
+      right = Math.max(right, r.right);
+      bottom = Math.max(bottom, r.bottom);
+    });
+    overlay.style.top = `${top - pad}px`;
+    overlay.style.left = `${left - pad}px`;
+    overlay.style.width = `${(right - left) + pad * 2}px`;
+    overlay.style.height = `${(bottom - top) + pad * 2}px`;
   }
 
-  function spotlightElement(el) {
+  function spotlightElements(els) {
     clearSpotlight();
-    if (!el) return;
+    if (!els || els.length === 0) return;
 
-    currentSpotlightEl = el;
-    const rect = el.getBoundingClientRect();
+    // Filter out nulls
+    const validEls = els.filter(Boolean);
+    if (validEls.length === 0) return;
+
+    currentSpotlightEl = validEls; // store array for scroll updates
+
+    function getBoundingBox() {
+      let top = Infinity, left = Infinity, right = -Infinity, bottom = -Infinity;
+      validEls.forEach(el => {
+        const r = el.getBoundingClientRect();
+        top = Math.min(top, r.top);
+        left = Math.min(left, r.left);
+        right = Math.max(right, r.right);
+        bottom = Math.max(bottom, r.bottom);
+      });
+      return { top, left, width: right - left, height: bottom - top };
+    }
+
     const pad = 6;
+    const box = getBoundingBox();
 
     overlay = document.createElement('div');
     overlay.id = 'smv-spotlight';
@@ -142,19 +167,22 @@
       z-index: 9998;
       pointer-events: none;
       border-radius: 6px;
-      top: ${rect.top - pad}px;
-      left: ${rect.left - pad}px;
-      width: ${rect.width + pad * 2}px;
-      height: ${rect.height + pad * 2}px;
+      top: ${box.top - pad}px;
+      left: ${box.left - pad}px;
+      width: ${box.width + pad * 2}px;
+      height: ${box.height + pad * 2}px;
       box-shadow: 0 0 0 9999px rgba(0,0,0,0.65), 0 0 0 3px #ff6b35;
       outline: 3px solid #ff6b35;
     `;
 
     document.body.appendChild(overlay);
 
-    // Keep spotlight locked to element on scroll/resize
     window.addEventListener('scroll', updateSpotlightPosition, { passive: true });
     window.addEventListener('resize', updateSpotlightPosition, { passive: true });
+  }
+
+  function spotlightElement(el) {
+    spotlightElements(el ? [el] : []);
   }
 
   function createCard() {
@@ -241,19 +269,21 @@
   function advance() {
     const step = steps[currentIndex];
 
-    // Determine what to spotlight
-    let targetEl = null;
+    let targetEls = [];
+
     if (step.elementId) {
-      targetEl = document.getElementById(step.elementId);
+      const el = document.getElementById(step.elementId);
+      if (el) targetEls.push(el);
     }
-    if (!targetEl && step.navHref) {
-      targetEl = getNavLink(step.navHref);
+    if (step.navHref) {
+      const el = getNavLink(step.navHref);
+      if (el) targetEls.push(el);
     }
 
-    if (targetEl) {
-      targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    if (targetEls.length > 0) {
+      targetEls[0].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       setTimeout(() => {
-        spotlightElement(targetEl);
+        spotlightElements(targetEls);
         createCard();
       }, 150);
     } else {
