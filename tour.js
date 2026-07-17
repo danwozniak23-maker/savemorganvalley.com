@@ -111,7 +111,11 @@
   let currentSpotlightEl = null;
 
   function clearSpotlight() {
-    if (overlay) { overlay.remove(); overlay = null; }
+    if (overlay) {
+      if (overlay._cleanup) overlay._cleanup();
+      overlay.remove();
+      overlay = null;
+    }
     currentSpotlightEl = null;
     window.removeEventListener('scroll', updateSpotlightPosition);
     window.removeEventListener('resize', updateSpotlightPosition);
@@ -137,48 +141,65 @@
 
   function spotlightElements(els) {
     clearSpotlight();
-    if (!els || els.length === 0) return;
-
-    // Filter out nulls
-    const validEls = els.filter(Boolean);
+    const validEls = (els || []).filter(Boolean);
     if (validEls.length === 0) return;
 
-    currentSpotlightEl = validEls; // store array for scroll updates
+    currentSpotlightEl = validEls;
 
-    function getBoundingBox() {
-      let top = Infinity, left = Infinity, right = -Infinity, bottom = -Infinity;
-      validEls.forEach(el => {
-        const r = el.getBoundingClientRect();
-        top = Math.min(top, r.top);
-        left = Math.min(left, r.left);
-        right = Math.max(right, r.right);
-        bottom = Math.max(bottom, r.bottom);
-      });
-      return { top, left, width: right - left, height: bottom - top };
-    }
-
-    const pad = 6;
-    const box = getBoundingBox();
-
+    // Create a container that holds the dark backdrop
     overlay = document.createElement('div');
     overlay.id = 'smv-spotlight';
     overlay.style.cssText = `
       position: fixed;
+      inset: 0;
       z-index: 9998;
       pointer-events: none;
-      border-radius: 6px;
-      top: ${box.top - pad}px;
-      left: ${box.left - pad}px;
-      width: ${box.width + pad * 2}px;
-      height: ${box.height + pad * 2}px;
-      box-shadow: 0 0 0 9999px rgba(0,0,0,0.65), 0 0 0 3px #ff6b35;
-      outline: 3px solid #ff6b35;
     `;
 
+    // Build SVG with cutouts for each element
+    function buildSVG() {
+      const W = window.innerWidth;
+      const H = window.innerHeight;
+      const pad = 6;
+      const rects = validEls.map(el => {
+        const r = el.getBoundingClientRect();
+        return { x: r.left - pad, y: r.top - pad, w: r.width + pad * 2, h: r.height + pad * 2 };
+      });
+
+      const cutouts = rects.map(r =>
+        `<rect x="${r.x}" y="${r.y}" width="${r.w}" height="${r.h}" rx="6"/>`
+      ).join('');
+
+      const borders = rects.map(r =>
+        `<rect x="${r.x}" y="${r.y}" width="${r.w}" height="${r.h}" rx="6" fill="none" stroke="#ff6b35" stroke-width="3"/>`
+      ).join('');
+
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" style="position:absolute;inset:0;">
+        <defs>
+          <mask id="smv-cutout">
+            <rect width="${W}" height="${H}" fill="white"/>
+            ${cutouts}
+          </mask>
+        </defs>
+        <rect width="${W}" height="${H}" fill="rgba(0,0,0,0.65)" mask="url(#smv-cutout)"/>
+        ${borders}
+      </svg>`;
+    }
+
+    overlay.innerHTML = buildSVG();
     document.body.appendChild(overlay);
 
-    window.addEventListener('scroll', updateSpotlightPosition, { passive: true });
-    window.addEventListener('resize', updateSpotlightPosition, { passive: true });
+    function redraw() {
+      if (!overlay) return;
+      overlay.innerHTML = buildSVG();
+    }
+
+    window.addEventListener('scroll', redraw, { passive: true });
+    window.addEventListener('resize', redraw, { passive: true });
+    overlay._cleanup = () => {
+      window.removeEventListener('scroll', redraw);
+      window.removeEventListener('resize', redraw);
+    };
   }
 
   function spotlightElement(el) {
