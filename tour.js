@@ -108,14 +108,30 @@
     return null;
   }
 
+  let currentSpotlightEl = null;
+
   function clearSpotlight() {
     if (overlay) { overlay.remove(); overlay = null; }
+    currentSpotlightEl = null;
+    window.removeEventListener('scroll', updateSpotlightPosition);
+    window.removeEventListener('resize', updateSpotlightPosition);
+  }
+
+  function updateSpotlightPosition() {
+    if (!overlay || !currentSpotlightEl) return;
+    const rect = currentSpotlightEl.getBoundingClientRect();
+    const pad = 6;
+    overlay.style.top = `${rect.top - pad}px`;
+    overlay.style.left = `${rect.left - pad}px`;
+    overlay.style.width = `${rect.width + pad * 2}px`;
+    overlay.style.height = `${rect.height + pad * 2}px`;
   }
 
   function spotlightElement(el) {
     clearSpotlight();
     if (!el) return;
 
+    currentSpotlightEl = el;
     const rect = el.getBoundingClientRect();
     const pad = 6;
 
@@ -135,6 +151,10 @@
     `;
 
     document.body.appendChild(overlay);
+
+    // Keep spotlight locked to element on scroll/resize
+    window.addEventListener('scroll', updateSpotlightPosition, { passive: true });
+    window.addEventListener('resize', updateSpotlightPosition, { passive: true });
   }
 
   function createCard() {
