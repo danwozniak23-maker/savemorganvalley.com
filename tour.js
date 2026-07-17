@@ -1,12 +1,12 @@
 /**
- * Save Morgan Valley — Guided Site Tour
+ * Save Morgan Valley - Guided Site Tour
  * Shows once per visitor (localStorage). Small floating card, lower-left.
- * Tour: Home → Petition → Calendar → Meetings → Donate → Info/FAQ → Social → Contact Us
+ * Tour: Home > Petition > Calendar > Meetings > IUC > Donate > Info/FAQ > Social > Contact Us
  */
 
 (function () {
   const TOUR_KEY = 'smv_tour_complete';
-  const TOTAL = 8;
+  const TOTAL = 9;
 
   const steps = [
     {
@@ -37,9 +37,17 @@
       pageMatch: ['/meetings.html'],
       title: '🏛️ Meetings That Matter',
       body: 'Show up to the government meetings where this project is being decided. Your presence is powerful.',
+      next: 'petition.html#iuc',
+      nextLabel: 'File with the IUC →',
+      index: 4
+    },
+    {
+      pageMatch: ['/petition.html#iuc'],
+      title: '⚖️ File with the IUC',
+      body: 'Submit an official comment or objection to the Iowa Utilities Commission on Docket GCU-2026-0002. Your filing becomes part of the public record.',
       next: 'index.html#donate',
       nextLabel: 'Donate →',
-      index: 4
+      index: 5
     },
     {
       pageMatch: ['/#donate', '/index.html#donate'],
@@ -47,15 +55,15 @@
       body: 'Help fund yard signs, legal fees, and outreach to protect our community.',
       next: 'information.html',
       nextLabel: 'Info/FAQ →',
-      index: 5
+      index: 6
     },
     {
       pageMatch: ['/information.html'],
       title: '📋 Info & FAQ',
-      body: 'Get the facts — emissions data, health impacts, property concerns, and answers to common questions.',
+      body: 'Get the facts: emissions data, health impacts, property concerns, and answers to common questions.',
       next: 'social.html',
       nextLabel: 'Social →',
-      index: 6
+      index: 7
     },
     {
       pageMatch: ['/social.html'],
@@ -63,15 +71,15 @@
       body: 'Follow us on social media and help spread the word to friends and neighbors.',
       next: 'contact-us.html',
       nextLabel: 'Contact Us →',
-      index: 7
+      index: 8
     },
     {
       pageMatch: ['/contact-us.html'],
       title: '📬 Get in Touch',
-      body: 'Have questions or want to get involved? Reach out — we\'re here to help.',
+      body: 'Have questions or want to get involved? Reach out and we\'re here to help.',
       next: null,
       nextLabel: 'Done ✓',
-      index: 8
+      index: 9
     }
   ];
 
@@ -79,16 +87,19 @@
     const path = window.location.pathname;
     const hash = window.location.hash;
 
-    // Donate is a special case — same page as home but with hash
+    // Special hash cases
     if ((path === '/' || path === '' || path.endsWith('index.html')) && hash === '#donate') {
+      return steps[5];
+    }
+    if (path.endsWith('petition.html') && hash === '#iuc') {
       return steps[4];
     }
 
     for (const step of steps) {
       for (const match of step.pageMatch) {
-        if (match.includes('#')) continue; // handled above
+        if (match.includes('#')) continue;
         if (match === '' || match === '/') {
-          if (path === '/' || path === '' || path.endsWith('/') && !path.endsWith('html')) return step;
+          if (path === '/' || path === '' || (path.endsWith('/') && !path.endsWith('html'))) return step;
         } else if (path.endsWith(match)) {
           return step;
         }
@@ -98,7 +109,6 @@
   }
 
   function createCard(step) {
-    // Remove existing card if any
     const existing = document.getElementById('smv-tour-card');
     if (existing) existing.remove();
 
@@ -128,7 +138,6 @@
     `;
     document.head.appendChild(style);
 
-    // Progress dots
     const dots = Array.from({ length: TOTAL }, (_, i) => {
       const active = i + 1 === step.index;
       return `<span style="display:inline-block;width:7px;height:7px;border-radius:50%;margin:0 2px;background:${active ? '#ff6b35' : '#e0e0e0'};"></span>`;
@@ -164,26 +173,31 @@
         localStorage.setItem(TOUR_KEY, '1');
         card.remove();
       } else if (step.next === 'index.html#donate') {
-        // Same page navigation — handle scroll
         if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/') {
           e.preventDefault();
           card.remove();
           setTimeout(() => {
             const donate = document.getElementById('donate');
             if (donate) donate.scrollIntoView({ behavior: 'smooth' });
-            // Recreate card for donate step after scroll
+            setTimeout(() => createCard(steps[5]), 600);
+          }, 100);
+        }
+      } else if (step.next === 'petition.html#iuc') {
+        if (window.location.pathname.endsWith('petition.html')) {
+          e.preventDefault();
+          card.remove();
+          setTimeout(() => {
+            const iuc = document.getElementById('iuc');
+            if (iuc) iuc.scrollIntoView({ behavior: 'smooth' });
             setTimeout(() => createCard(steps[4]), 600);
           }, 100);
         }
-        // Otherwise let normal navigation happen — tour.js will show donate step on arrival
       }
     });
   }
 
   function init() {
     if (localStorage.getItem(TOUR_KEY)) return;
-
-    // Suppress on mobile
     if (window.innerWidth < 768) return;
 
     const step = getCurrentStep();
