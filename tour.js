@@ -77,8 +77,8 @@
       pageMatch: ['/contact-us.html'],
       title: '📬 Get in Touch',
       body: 'Have questions or want to get involved? Reach out and we\'re here to help.',
-      next: null,
-      nextLabel: 'Done ✓',
+      next: 'index.html',
+      nextLabel: 'Done - Back to Home ✓',
       index: 9
     }
   ];
@@ -168,10 +168,15 @@
     });
 
     document.getElementById('smv-tour-next').addEventListener('click', function (e) {
-      if (!step.next) {
-        e.preventDefault();
-        localStorage.setItem(TOUR_KEY, '1');
-        card.remove();
+      if (!step.next || step.next === 'index.html') {
+        if (step.next === 'index.html') {
+          localStorage.setItem(TOUR_KEY, '1');
+          // let the link navigate naturally
+        } else {
+          e.preventDefault();
+          localStorage.setItem(TOUR_KEY, '1');
+          card.remove();
+        }
       } else if (step.next === 'index.html#donate') {
         if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/') {
           e.preventDefault();
