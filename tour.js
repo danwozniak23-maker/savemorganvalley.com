@@ -90,7 +90,7 @@
       title: '📬 Contact',
       body: 'Have questions or want to get more involved? Reach out and we are here to help.',
       link: 'contact-us.html',
-      nextLabel: "I'm ready to help →"
+      nextLabel: "Let's Save Morgan Valley →"
     }
   ];
 
