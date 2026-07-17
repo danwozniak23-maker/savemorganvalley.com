@@ -190,7 +190,7 @@
     <script>
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxoE0JvmkRO8K9ZWlsRHVUo0A4EEzKK6R19eLxcNee_6fGSa-0c514m9GRJzvPwC4LX5w/exec';
 
-        document.getElementById('volunteerForm').addEventListener('submit', function(e) {
+        document.getElementById('volunteerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const btn = document.getElementById('submitBtn');
@@ -200,13 +200,7 @@
             btn.textContent = 'Submitting...';
             status.style.display = 'none';
 
-            // Build a hidden form and submit it to the Apps Script URL
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = APPS_SCRIPT_URL;
-            form.target = 'smv-hidden-iframe';
-
-            const fields = {
+            const params = new URLSearchParams({
                 firstName: document.getElementById('firstName').value.trim(),
                 lastName:  document.getElementById('lastName').value.trim(),
                 email:     document.getElementById('email').value.trim(),
@@ -215,33 +209,34 @@
                 helpType:  document.getElementById('helpType').value,
                 notes:     document.getElementById('notes').value.trim(),
                 timestamp: new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' })
-            };
+            });
 
-            for (const [key, val] of Object.entries(fields)) {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = key;
-                input.value = val;
-                form.appendChild(input);
-            }
+            try {
+                await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: params.toString()
+                });
 
-            document.body.appendChild(form);
-            form.submit();
-            document.body.removeChild(form);
-
-            // Show success after a short delay (can't read iframe response due to CORS)
-            setTimeout(() => {
                 status.textContent = 'Thank you! We will be in touch soon.';
                 status.className = 'form-status success';
                 status.style.display = 'block';
                 document.getElementById('volunteerForm').reset();
-                btn.disabled = false;
-                btn.textContent = 'Sign Up to Volunteer';
-            }, 1500);
+
+            } catch (err) {
+                status.textContent = 'Something went wrong. Please email us directly at savemorganvalley@gmail.com';
+                status.className = 'form-status error';
+                status.style.display = 'block';
+                console.error(err);
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Sign Up to Volunteer';
         });
     </script>
 
-    <!-- Hidden iframe to absorb the Apps Script redirect response -->
+    <!-- Hidden iframe fallback -->
     <iframe name="smv-hidden-iframe" style="display:none;"></iframe>
 </body>
 </html>
