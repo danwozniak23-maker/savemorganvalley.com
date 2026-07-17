@@ -10,58 +10,67 @@
 
   const steps = [
     {
-      navHref: null, // No nav highlight for welcome
+      navHref: null,
       title: 'Welcome to Save Morgan Valley',
       body: 'A 720MW natural gas power plant is proposed in our community. Let us show you what is available on this site and how you can help stop it.',
-      nextLabel: 'Next: Petition →'
+      link: null,
+      nextLabel: 'Start: Petition →'
     },
     {
       navHref: 'petition.html',
       title: '✍️ Petition',
       body: 'Sign the physical petition against the plant. Physical signatures carry real weight with decision-makers.',
+      link: 'petition.html',
       nextLabel: 'Next: Volunteer →'
     },
     {
       navHref: 'volunteer.html',
       title: '🤝 Volunteer',
       body: 'Help with door-to-door outreach, event support, or other efforts to protect our community.',
+      link: 'volunteer.html',
       nextLabel: 'Next: Info/FAQ →'
     },
     {
       navHref: 'information.html',
       title: '📋 Info/FAQ',
       body: 'Get the facts: projected emissions, health impacts, property concerns, and answers to common questions about the plant.',
+      link: 'information.html',
       nextLabel: 'Next: Calendar →'
     },
     {
       navHref: 'calendar.html',
       title: '📅 Calendar',
       body: 'Come meet your neighbors at one of our petition signing events and show your support in person.',
+      link: 'calendar.html',
       nextLabel: 'Next: Meetings →'
     },
     {
       navHref: 'meetings.html',
       title: '🏛️ Meetings',
       body: 'Upcoming government meetings where this project is being decided. Showing up sends a powerful message.',
+      link: 'meetings.html',
       nextLabel: 'Next: Representatives →'
     },
     {
       navHref: 'representatives.html',
       title: '📞 Representatives',
       body: 'Contact your local, county, and state representatives directly. Let them know where you stand.',
+      link: 'representatives.html',
       nextLabel: 'Next: Social →'
     },
     {
       navHref: 'social.html',
       title: '📣 Social',
       body: 'Follow us on social media and help spread the word to friends and neighbors.',
+      link: 'social.html',
       nextLabel: 'Next: Contact →'
     },
     {
       navHref: 'contact-us.html',
       title: '📬 Contact',
       body: 'Have questions or want to get more involved? Reach out and we are here to help.',
-      nextLabel: 'Done - Back to Top ✓'
+      link: 'contact-us.html',
+      nextLabel: 'Thanks for looking around!'
     }
   ];
 
@@ -151,7 +160,9 @@
         <div style="font-size:11px;color:#aaa;">${currentIndex + 1} of ${total}</div>
       </div>
       <div style="font-weight:700;font-size:0.95rem;color:#333;margin-bottom:6px;">${step.title}</div>
-      <div style="font-size:0.85rem;color:#555;line-height:1.5;margin-bottom:14px;">${step.body}</div>
+      ${currentIndex === 0 ? `<div style="font-size:10px;color:#aaa;margin-bottom:6px;letter-spacing:0.5px;">9 stops &bull; takes about 2 minutes</div>` : ''}
+      <div style="font-size:0.85rem;color:#555;line-height:1.5;margin-bottom:${step.link ? '8px' : '14px'};">${step.body}</div>
+      ${step.link ? `<a href="${step.link}" style="display:block;font-size:0.8rem;color:#ff6b35;text-decoration:underline;margin-bottom:12px;">Visit this page →</a>` : ''}
       <button id="smv-tour-next" style="display:block;width:100%;background:#ff6b35;color:white;text-align:center;padding:9px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:bold;font-size:0.85rem;"
         onmouseover="this.style.background='#e55a25'" onmouseout="this.style.background='#ff6b35'">
         ${step.nextLabel}
