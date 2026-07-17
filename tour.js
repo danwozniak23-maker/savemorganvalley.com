@@ -1,22 +1,35 @@
 /**
  * Save Morgan Valley - Spotlight Tour (v2)
- * Runs on home page only. Highlights each nav item with a dark overlay.
+ * Runs on home page only. Highlights elements with a dark overlay.
  * Shows once per visitor via localStorage.
  * Suppressed on mobile (< 768px).
+ * Dots are clickable to jump to any step.
  */
 
 (function () {
   const TOUR_KEY = 'smv_tour_complete';
 
+  // elementId: DOM id to spotlight (null = no spotlight)
+  // navHref: nav link to spotlight (alternative to elementId)
   const steps = [
     {
+      elementId: null,
       navHref: null,
       title: 'Welcome to Save Morgan Valley',
       body: 'A 720MW natural gas power plant is proposed in our community. Let us show you what is available on this site and how you can help stop it.',
       link: null,
-      nextLabel: 'Start: Petition →'
+      nextLabel: 'Start Tour →'
     },
     {
+      elementId: 'smv-alert-banner',
+      navHref: null,
+      title: '📢 Important Alert',
+      body: 'This banner highlights our most urgent upcoming event or announcement. Check it every time you visit.',
+      link: null,
+      nextLabel: 'Next: Petition →'
+    },
+    {
+      elementId: null,
       navHref: 'petition.html',
       title: '✍️ Petition',
       body: 'Sign the physical petition against the plant. Physical signatures carry real weight with decision-makers.',
@@ -24,6 +37,7 @@
       nextLabel: 'Next: Volunteer →'
     },
     {
+      elementId: null,
       navHref: 'volunteer.html',
       title: '🤝 Volunteer',
       body: 'Help with door-to-door outreach, event support, or other efforts to protect our community.',
@@ -31,6 +45,7 @@
       nextLabel: 'Next: Info/FAQ →'
     },
     {
+      elementId: null,
       navHref: 'information.html',
       title: '📋 Info/FAQ',
       body: 'Get the facts: projected emissions, health impacts, property concerns, and answers to common questions about the plant.',
@@ -38,13 +53,15 @@
       nextLabel: 'Next: Calendar →'
     },
     {
+      elementId: 'smv-event-ticker',
       navHref: 'calendar.html',
-      title: '📅 Calendar',
-      body: 'Come meet your neighbors at one of our petition signing events and show your support in person.',
+      title: '📅 Calendar & Events',
+      body: 'Upcoming petition signing events near you. The ticker above shows the next event. View the full calendar for all dates.',
       link: 'calendar.html',
       nextLabel: 'Next: Meetings →'
     },
     {
+      elementId: null,
       navHref: 'meetings.html',
       title: '🏛️ Meetings',
       body: 'Upcoming government meetings where this project is being decided. Showing up sends a powerful message.',
@@ -52,6 +69,7 @@
       nextLabel: 'Next: Representatives →'
     },
     {
+      elementId: null,
       navHref: 'representatives.html',
       title: '📞 Representatives',
       body: 'Contact your local, county, and state representatives directly. Let them know where you stand.',
@@ -59,6 +77,7 @@
       nextLabel: 'Next: Social →'
     },
     {
+      elementId: null,
       navHref: 'social.html',
       title: '📣 Social',
       body: 'Follow us on social media and help spread the word to friends and neighbors.',
@@ -66,6 +85,7 @@
       nextLabel: 'Next: Contact →'
     },
     {
+      elementId: null,
       navHref: 'contact-us.html',
       title: '📬 Contact',
       body: 'Have questions or want to get more involved? Reach out and we are here to help.',
@@ -74,6 +94,7 @@
     }
   ];
 
+  const TOTAL = steps.length;
   let currentIndex = 0;
   let overlay = null;
   let card = null;
@@ -100,22 +121,17 @@
 
     overlay = document.createElement('div');
     overlay.id = 'smv-spotlight';
-
-    // Full page dark overlay with a box-shadow cutout around the target
     overlay.style.cssText = `
       position: fixed;
-      inset: 0;
       z-index: 9998;
       pointer-events: none;
-      box-shadow: 0 0 0 9999px rgba(0,0,0,0.65);
       border-radius: 6px;
-      top: ${rect.top - pad + window.scrollY}px;
+      top: ${rect.top - pad}px;
       left: ${rect.left - pad}px;
       width: ${rect.width + pad * 2}px;
       height: ${rect.height + pad * 2}px;
-      outline: 3px solid #ff6b35;
-      outline-offset: 0px;
       box-shadow: 0 0 0 9999px rgba(0,0,0,0.65), 0 0 0 3px #ff6b35;
+      outline: 3px solid #ff6b35;
     `;
 
     document.body.appendChild(overlay);
@@ -126,11 +142,15 @@
     if (existing) existing.remove();
 
     const step = steps[currentIndex];
-    const total = steps.length;
 
+    // Clickable dots
     const dots = steps.map((_, i) => {
       const active = i === currentIndex;
-      return `<span style="display:inline-block;width:7px;height:7px;border-radius:50%;margin:0 2px;background:${active ? '#ff6b35' : '#e0e0e0'};"></span>`;
+      return `<span 
+        data-idx="${i}"
+        style="display:inline-block;width:${active ? '10px' : '7px'};height:${active ? '10px' : '7px'};border-radius:50%;margin:0 3px;background:${active ? '#ff6b35' : '#ccc'};cursor:pointer;vertical-align:middle;transition:all 0.2s;"
+        title="Go to stop ${i + 1}"
+      ></span>`;
     }).join('');
 
     card = document.createElement('div');
@@ -156,11 +176,11 @@
         <button id="smv-tour-skip" style="background:none;border:none;color:#999;cursor:pointer;font-size:18px;line-height:1;padding:0;margin-top:-2px;" title="Skip tour">×</button>
       </div>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-        <div>${dots}</div>
-        <div style="font-size:11px;color:#aaa;">${currentIndex + 1} of ${total}</div>
+        <div id="smv-dots">${dots}</div>
+        <div style="font-size:11px;color:#aaa;">${currentIndex + 1} of ${TOTAL}</div>
       </div>
       <div style="font-weight:700;font-size:0.95rem;color:#333;margin-bottom:6px;">${step.title}</div>
-      ${currentIndex === 0 ? `<div style="font-size:10px;color:#aaa;margin-bottom:6px;letter-spacing:0.5px;">9 stops &bull; takes about 2 minutes</div>` : ''}
+      ${currentIndex === 0 ? `<div style="font-size:10px;color:#aaa;margin-bottom:6px;letter-spacing:0.5px;">${TOTAL} stops &bull; takes about 2 minutes</div>` : ''}
       <div style="font-size:0.85rem;color:#555;line-height:1.5;margin-bottom:${step.link ? '8px' : '14px'};">${step.body}</div>
       ${step.link ? `<a href="${step.link}" style="display:block;font-size:0.8rem;color:#ff6b35;text-decoration:underline;margin-bottom:12px;">Visit this page →</a>` : ''}
       <button id="smv-tour-next" style="display:block;width:100%;background:#ff6b35;color:white;text-align:center;padding:9px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:bold;font-size:0.85rem;"
@@ -171,11 +191,25 @@
 
     document.body.appendChild(card);
 
+    // Dot click handlers
+    document.getElementById('smv-dots').querySelectorAll('span').forEach(dot => {
+      dot.addEventListener('click', function () {
+        const idx = parseInt(this.getAttribute('data-idx'));
+        currentIndex = idx;
+        advance();
+      });
+      dot.addEventListener('mouseover', function () { this.style.background = '#ff6b35'; });
+      dot.addEventListener('mouseout', function () {
+        const idx = parseInt(this.getAttribute('data-idx'));
+        this.style.background = idx === currentIndex ? '#ff6b35' : '#ccc';
+      });
+    });
+
     document.getElementById('smv-tour-skip').addEventListener('click', finish);
 
     document.getElementById('smv-tour-next').addEventListener('click', function () {
       currentIndex++;
-      if (currentIndex >= steps.length) {
+      if (currentIndex >= TOTAL) {
         finish();
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
@@ -186,12 +220,20 @@
 
   function advance() {
     const step = steps[currentIndex];
-    const navEl = getNavLink(step.navHref);
 
-    if (navEl) {
-      navEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // Determine what to spotlight
+    let targetEl = null;
+    if (step.elementId) {
+      targetEl = document.getElementById(step.elementId);
+    }
+    if (!targetEl && step.navHref) {
+      targetEl = getNavLink(step.navHref);
+    }
+
+    if (targetEl) {
+      targetEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       setTimeout(() => {
-        spotlightElement(navEl);
+        spotlightElement(targetEl);
         createCard();
       }, 150);
     } else {
@@ -210,11 +252,9 @@
     if (localStorage.getItem(TOUR_KEY)) return;
     if (window.innerWidth < 768) return;
 
-    // Only run on home page
     const path = window.location.pathname;
     if (!(path === '/' || path === '' || path.endsWith('index.html'))) return;
 
-    // Inject animation style
     const style = document.createElement('style');
     style.textContent = `
       @keyframes smvSlideIn {
@@ -224,9 +264,7 @@
     `;
     document.head.appendChild(style);
 
-    setTimeout(() => {
-      advance();
-    }, 900);
+    setTimeout(advance, 900);
   }
 
   if (document.readyState === 'loading') {
