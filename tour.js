@@ -14,7 +14,7 @@
       title: 'Welcome to Save Morgan Valley',
       body: 'A 720MW natural gas power plant is proposed in our community. Let us show you around and how you can help.',
       next: 'petition.html',
-      nextLabel: 'Petition →',
+      nextLabel: 'Next: Petition →',
       index: 1
     },
     {
@@ -22,7 +22,7 @@
       title: '✍️ Sign the Petition',
       body: 'Physical signatures carry real weight with decision-makers. Sign in person or have us come to you.',
       next: 'calendar.html',
-      nextLabel: 'Calendar →',
+      nextLabel: 'Next: Calendar →',
       index: 2
     },
     {
@@ -30,7 +30,7 @@
       title: '📅 Upcoming Events',
       body: 'Come meet your neighbors at one of our petition signing events and show your support in person.',
       next: 'meetings.html',
-      nextLabel: 'Meetings →',
+      nextLabel: 'Next: Meetings →',
       index: 3
     },
     {
@@ -38,7 +38,7 @@
       title: '🏛️ Meetings That Matter',
       body: 'Show up to the government meetings where this project is being decided. Your presence is powerful.',
       next: 'petition.html#iuc',
-      nextLabel: 'File with the IUC →',
+      nextLabel: 'Next: File with the IUC →',
       index: 4
     },
     {
@@ -46,7 +46,7 @@
       title: '⚖️ File with the IUC',
       body: 'Submit an official comment or objection to the Iowa Utilities Commission on Docket GCU-2026-0002. Your filing becomes part of the public record.',
       next: 'index.html#donate',
-      nextLabel: 'Donate →',
+      nextLabel: 'Next: Donate →',
       index: 5
     },
     {
@@ -54,7 +54,7 @@
       title: '💚 Support the Cause',
       body: 'Help fund yard signs, legal fees, and outreach to protect our community.',
       next: 'information.html',
-      nextLabel: 'Info/FAQ →',
+      nextLabel: 'Next: Info/FAQ →',
       index: 6
     },
     {
@@ -62,7 +62,7 @@
       title: '📋 Info & FAQ',
       body: 'Get the facts: emissions data, health impacts, property concerns, and answers to common questions.',
       next: 'social.html',
-      nextLabel: 'Social →',
+      nextLabel: 'Next: Social →',
       index: 7
     },
     {
@@ -70,7 +70,7 @@
       title: '📣 Follow & Share',
       body: 'Follow us on social media and help spread the word to friends and neighbors.',
       next: 'contact-us.html',
-      nextLabel: 'Contact Us →',
+      nextLabel: 'Next: Contact Us →',
       index: 8
     },
     {
