@@ -62,26 +62,11 @@
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; flex-wrap: wrap;">
                             <div>
                                 <h4 style="color: #ff6b35; margin-bottom: 1rem;">Work Sessions — Mondays at 10 a.m.</h4>
-                                <ul style="list-style: none; padding: 0; font-size: 1rem; line-height: 2;">
-                                    <li>Monday, July 20</li>
-                                    <li>Monday, July 27</li>
-                                    <li>Monday, August 3</li>
-                                    <li>Monday, August 10</li>
-                                    <li>Monday, August 17</li>
-                                    <li>Monday, August 24</li>
-                                    <li>Monday, August 31</li>
-                                </ul>
+                                <ul id="work-sessions" style="list-style: none; padding: 0; font-size: 1rem; line-height: 2;"><li style="color:#999;">Loading...</li></ul>
                             </div>
                             <div>
                                 <h4 style="color: #ff6b35; margin-bottom: 1rem;">Formal Sessions — Wednesdays at 10 a.m.</h4>
-                                <ul style="list-style: none; padding: 0; font-size: 1rem; line-height: 2;">
-                                    <li>Wednesday, July 22</li>
-                                    <li>Wednesday, July 29</li>
-                                    <li>Wednesday, August 5</li>
-                                    <li>Wednesday, August 12</li>
-                                    <li>Wednesday, August 19</li>
-                                    <li>Wednesday, August 26</li>
-                                </ul>
+                                <ul id="formal-sessions" style="list-style: none; padding: 0; font-size: 1rem; line-height: 2;"><li style="color:#999;">Loading...</li></ul>
                             </div>
                         </div>
                     </div>
@@ -94,11 +79,7 @@
                         <p style="color: #666; margin-bottom: 0.25rem;">Council Chambers, 3rd Floor, City Hall, 101 First Street SE, Cedar Rapids</p>
                         <p style="color: #666; font-size: 0.95rem; margin-bottom: 0.5rem;">2nd and 4th Tuesdays of the month</p>
                         <p style="color: #666; font-size: 0.95rem; margin-bottom: 2rem;"><a href="https://cedar-rapids.org/local_government/city_council/city_council_meetings/index.php" target="_blank" rel="noopener" style="color: #ff6b35;">cedar-rapids.org</a></p>
-                        <ul style="list-style: none; padding: 0; font-size: 1rem; line-height: 2;">
-                            <li>Tuesday, July 28 at 4:00 PM</li>
-                            <li>Tuesday, August 11 at 12:00 noon</li>
-                            <li>Tuesday, August 25 at 4:00 PM</li>
-                        </ul>
+                        <ul id="cr-council" style="list-style: none; padding: 0; font-size: 1rem; line-height: 2;"><li style="color:#999;">Loading...</li></ul>
                     </div>
                 </div>
 
@@ -109,10 +90,7 @@
                         <p style="color: #666; margin-bottom: 0.25rem;">Jean Oxley Linn County Public Service Center, 935 2nd St. SW, Cedar Rapids</p>
                         <p style="color: #666; font-size: 0.95rem; margin-bottom: 0.5rem;">3rd Monday of each month at 6 p.m.</p>
                         <p style="color: #666; font-size: 0.95rem; margin-bottom: 2rem;"><a href="https://www.linncountyiowa.gov/1218/Planning-Zoning-Commission" target="_blank" rel="noopener" style="color: #ff6b35;">linncountyiowa.gov</a></p>
-                        <ul style="list-style: none; padding: 0; font-size: 1rem; line-height: 2;">
-                            <li>Monday, July 20 at 6 p.m.</li>
-                            <li>Monday, August 17 at 6 p.m.</li>
-                        </ul>
+                        <ul id="pz-meetings" style="list-style: none; padding: 0; font-size: 1rem; line-height: 2;"><li style="color:#999;">Loading...</li></ul>
                         <p style="font-size: 0.9rem; color: #666; margin-top: 1rem; font-style: italic;">Note: The Planning & Zoning Commission must approve rezoning the proposed plant site for industrial use before the project can move forward.</p>
                     </div>
                 </div>
@@ -133,5 +111,54 @@
     </footer>
     <script src="mobile-menu.js"></script>
     <script src="tour.js"></script>
+    <script>
+        const SHEET_ID = '1KfYBtVnwkE4kbRSR1VpPrnjbkLjnax1qILeg_xHf8QQ';
+
+        function csvToRows(csv) {
+            const rows = [];
+            let row = [], field = '', inQuotes = false;
+            for (let i = 0; i < csv.length; i++) {
+                const ch = csv[i], next = csv[i+1];
+                if (ch === '"') { if (inQuotes && next === '"') { field += '"'; i++; } else inQuotes = !inQuotes; }
+                else if (ch === ',' && !inQuotes) { row.push(field.trim()); field = ''; }
+                else if ((ch === '\n' || ch === '\r') && !inQuotes) {
+                    if (ch === '\r' && next === '\n') i++;
+                    row.push(field.trim());
+                    if (row.some(f => f)) rows.push(row);
+                    row = []; field = '';
+                } else { field += ch; }
+            }
+            if (field || row.length) { row.push(field.trim()); if (row.some(f => f)) rows.push(row); }
+            return rows.slice(1);
+        }
+
+        function formatDate(dateStr) {
+            const [year, month, day] = dateStr.split('-').map(Number);
+            return new Date(year, month-1, day).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+        }
+
+        async function loadMeetings() {
+            try {
+                const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Meetings`;
+                const rows = csvToRows(await (await fetch(url)).text());
+                const today = new Date(); today.setHours(0,0,0,0);
+                const upcoming = rows.filter(r => { const [y,m,d] = r[2].split('-').map(Number); return new Date(y,m-1,d) >= today; });
+
+                function renderList(elId, items, showTime) {
+                    const el = document.getElementById(elId);
+                    if (!el) return;
+                    if (!items.length) { el.innerHTML = '<li style="color:#999;">None listed</li>'; return; }
+                    el.innerHTML = items.map(r => `<li>${formatDate(r[2])}${showTime ? ' at ' + r[3] : ''}</li>`).join('');
+                }
+
+                renderList('work-sessions',   upcoming.filter(r => r[0].includes('Supervisors') && r[1] === 'Work Session'),   false);
+                renderList('formal-sessions', upcoming.filter(r => r[0].includes('Supervisors') && r[1] === 'Formal Session'), false);
+                renderList('cr-council',      upcoming.filter(r => r[0].includes('Cedar Rapids')), true);
+                renderList('pz-meetings',     upcoming.filter(r => r[0].includes('Planning')),     true);
+            } catch(e) { console.error('Meetings error:', e); }
+        }
+
+        loadMeetings();
+    </script>
 </body>
 </html>
