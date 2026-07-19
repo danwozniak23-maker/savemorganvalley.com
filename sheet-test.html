@@ -69,8 +69,59 @@
 
                 <!-- MEETINGS -->
                 <h3 style="color: #ff6b35; margin-bottom: 1rem;">🏛️ Meetings That Matter (from Sheet)</h3>
-                <div id="meetingsContent">
-                    <p style="color: #666;">Loading...</p>
+                <p style="font-size: 1rem; margin-bottom: 2rem; color: #666; text-align: center;">All meetings are open to the public. Meeting schedules are subject to change, check the official websites for the latest.</p>
+
+                <!-- Jump Links -->
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin: 2rem 0;">
+                    <a href="#t-supervisors" class="jump-link-button">Linn County Supervisors</a>
+                    <a href="#t-cedar-rapids" class="jump-link-button">Cedar Rapids City Council</a>
+                    <a href="#t-planning-zoning" class="jump-link-button">Planning & Zoning</a>
+                </div>
+
+                <!-- Linn County Board of Supervisors -->
+                <div id="t-supervisors" style="margin: 3rem 0; scroll-margin-top: 100px;">
+                    <div class="info-box">
+                        <h3 style="color: #ff6b35; font-size: 1.8rem; margin-bottom: 0.5rem;">Linn County Board of Supervisors</h3>
+                        <p style="color: #666; margin-bottom: 0.25rem;">Jean Oxley Linn County Public Service Center, 935 2nd St. SW, Cedar Rapids</p>
+                        <p style="color: #666; font-size: 0.95rem; margin-bottom: 2rem;"><a href="https://www.linncountyiowa.gov/123/Board-of-Supervisors" target="_blank" rel="noopener" style="color: #ff6b35;">linncountyiowa.gov</a></p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                            <div>
+                                <h4 style="color: #ff6b35; margin-bottom: 1rem;">Work Sessions — Mondays at 10 a.m.</h4>
+                                <ul id="t-work-sessions" style="list-style: none; padding: 0; font-size: 1rem; line-height: 2;"><li style="color:#999;">Loading...</li></ul>
+                            </div>
+                            <div>
+                                <h4 style="color: #ff6b35; margin-bottom: 1rem;">Formal Sessions — Wednesdays at 10 a.m.</h4>
+                                <ul id="t-formal-sessions" style="list-style: none; padding: 0; font-size: 1rem; line-height: 2;"><li style="color:#999;">Loading...</li></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cedar Rapids City Council -->
+                <div id="t-cedar-rapids" style="margin: 3rem 0; scroll-margin-top: 100px;">
+                    <div class="info-box">
+                        <h3 style="color: #ff6b35; font-size: 1.8rem; margin-bottom: 0.5rem;">Cedar Rapids City Council</h3>
+                        <p style="color: #666; margin-bottom: 0.25rem;">Council Chambers, 3rd Floor, City Hall, 101 First Street SE, Cedar Rapids</p>
+                        <p style="color: #666; font-size: 0.95rem; margin-bottom: 0.5rem;">2nd and 4th Tuesdays of the month</p>
+                        <p style="color: #666; font-size: 0.95rem; margin-bottom: 2rem;"><a href="https://cedar-rapids.org/local_government/city_council/city_council_meetings/index.php" target="_blank" rel="noopener" style="color: #ff6b35;">cedar-rapids.org</a></p>
+                        <ul id="t-cr-council" style="list-style: none; padding: 0; font-size: 1rem; line-height: 2;"><li style="color:#999;">Loading...</li></ul>
+                    </div>
+                </div>
+
+                <!-- Linn County Planning & Zoning -->
+                <div id="t-planning-zoning" style="margin: 3rem 0; scroll-margin-top: 100px;">
+                    <div class="info-box">
+                        <h3 style="color: #ff6b35; font-size: 1.8rem; margin-bottom: 0.5rem;">Linn County Planning & Zoning Commission</h3>
+                        <p style="color: #666; margin-bottom: 0.25rem;">Jean Oxley Linn County Public Service Center, 935 2nd St. SW, Cedar Rapids</p>
+                        <p style="color: #666; font-size: 0.95rem; margin-bottom: 0.5rem;">3rd Monday of each month at 6 p.m.</p>
+                        <p style="color: #666; font-size: 0.95rem; margin-bottom: 2rem;"><a href="https://www.linncountyiowa.gov/1218/Planning-Zoning-Commission" target="_blank" rel="noopener" style="color: #ff6b35;">linncountyiowa.gov</a></p>
+                        <ul id="t-pz" style="list-style: none; padding: 0; font-size: 1rem; line-height: 2;"><li style="color:#999;">Loading...</li></ul>
+                        <p style="font-size: 0.9rem; color: #666; margin-top: 1rem; font-style: italic;">Note: The Planning & Zoning Commission must approve rezoning the proposed plant site for industrial use before the project can move forward.</p>
+                    </div>
+                </div>
+
+                <div style="background: #f9f9f9; border-radius: 8px; padding: 1.5rem; margin-top: 2rem; text-align: center;">
+                    <p style="font-size: 1rem; color: #555; margin: 0;">Questions? <a href="contact-us.html" style="color: #ff6b35; font-weight: bold;">Contact us</a> and we'll help.</p>
                 </div>
             </div>
         </section>
@@ -195,67 +246,23 @@
                     return new Date(year, month-1, day) >= today;
                 });
 
-                const el = document.getElementById('meetingsContent');
-                if (upcoming.length === 0) {
-                    el.innerHTML = '<p style="color:#666;">No upcoming meetings listed.</p>';
-                    return;
+                const work    = upcoming.filter(r => r[0].includes('Supervisors') && r[1] === 'Work Session');
+                const formal  = upcoming.filter(r => r[0].includes('Supervisors') && r[1] === 'Formal Session');
+                const cr      = upcoming.filter(r => r[0].includes('Cedar Rapids'));
+                const pz      = upcoming.filter(r => r[0].includes('Planning'));
+
+                function renderList(elId, items, showTime) {
+                    const el = document.getElementById(elId);
+                    if (!items.length) { el.innerHTML = '<li style="color:#999;">None listed</li>'; return; }
+                    el.innerHTML = items.map(r =>
+                        `<li>${formatDate(r[2])}${showTime ? ' at ' + r[3] : ''}</li>`
+                    ).join('');
                 }
 
-                // Group by Body
-                const grouped = {};
-                upcoming.forEach(r => {
-                    const body = r[0], subtype = r[1], date = r[2], time = r[3], location = r[4];
-                    if (!grouped[body]) grouped[body] = { location, rows: [], subtypes: {} };
-                    if (subtype) {
-                        if (!grouped[body].subtypes[subtype]) grouped[body].subtypes[subtype] = [];
-                        grouped[body].subtypes[subtype].push({ date, time });
-                    } else {
-                        grouped[body].rows.push({ date, time });
-                    }
-                });
-
-                const bodyLinks = {
-                    'Linn County Board of Supervisors': 'https://www.linncountyiowa.gov/123/Board-of-Supervisors',
-                    'Cedar Rapids City Council': 'https://cedar-rapids.org/local_government/city_council/city_council_meetings/index.php',
-                    'Linn County Planning & Zoning': 'https://www.linncountyiowa.gov/1218/Planning-Zoning-Commission'
-                };
-
-                const bodyNotes = {
-                    'Linn County Planning & Zoning': 'The Planning & Zoning Commission must approve rezoning the proposed plant site for industrial use before the project can move forward.'
-                };
-
-                el.innerHTML = Object.entries(grouped).map(([body, data]) => {
-                    const link = bodyLinks[body] ? `<a href="${bodyLinks[body]}" target="_blank" rel="noopener" style="color:#ff6b35;font-size:0.95rem;">${new URL(bodyLinks[body]).hostname}</a>` : '';
-                    const note = bodyNotes[body] ? `<p style="font-size:0.9rem;color:#666;margin-top:1rem;font-style:italic;">${bodyNotes[body]}</p>` : '';
-
-                    // Subtypes = two-column layout (Supervisors Work/Formal)
-                    let datesHtml = '';
-                    if (Object.keys(data.subtypes).length > 0) {
-                        const cols = Object.entries(data.subtypes).map(([subtype, dates]) => `
-                            <div>
-                                <h4 style="color:#ff6b35;margin-bottom:1rem;">${subtype}s — ${dates[0].time}</h4>
-                                <ul style="list-style:none;padding:0;font-size:1rem;line-height:2;">
-                                    ${dates.map(d => `<li>${formatDate(d.date)}</li>`).join('')}
-                                </ul>
-                            </div>
-                        `).join('');
-                        datesHtml = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;flex-wrap:wrap;">${cols}</div>`;
-                    } else {
-                        datesHtml = `<ul style="list-style:none;padding:0;font-size:1rem;line-height:2;">
-                            ${data.rows.map(d => `<li>${formatDate(d.date)} at ${d.time}</li>`).join('')}
-                        </ul>`;
-                    }
-
-                    return `
-                        <div class="info-box" style="margin:2rem 0;">
-                            <h3 style="color:#ff6b35;font-size:1.8rem;margin-bottom:0.5rem;">${body}</h3>
-                            <p style="color:#666;margin-bottom:0.25rem;">${data.location}</p>
-                            <p style="margin-bottom:2rem;">${link}</p>
-                            ${datesHtml}
-                            ${note}
-                        </div>
-                    `;
-                }).join('');
+                renderList('t-work-sessions', work, false);
+                renderList('t-formal-sessions', formal, false);
+                renderList('t-cr-council', cr, true);
+                renderList('t-pz', pz, true);
 
             } catch(e) { console.error('Meetings error:', e); }
         }
