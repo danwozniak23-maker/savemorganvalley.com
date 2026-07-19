@@ -62,89 +62,113 @@
             <a href="calendar.html" style="color: white; text-decoration: underline; margin-top: 0.5rem; display: inline-block; font-weight: bold;">View Full Calendar →</a>
         </div>
         <script>
-            // Event data with dates - Updated May 22, 2026
-            const events = [];
+            const SHEET_ID = '1KfYBtVnwkE4kbRSR1VpPrnjbkLjnax1qILeg_xHf8QQ';
 
-            let currentIndex = 0;
-            let upcomingEvents = [];
-
-            function updateEventTicker() {
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                
-                // Filter upcoming events
-                upcomingEvents = events.filter(event => {
-                    const [year, month, day] = event.date.split('-').map(Number);
-                    const eventDate = new Date(year, month - 1, day);
-                    return eventDate >= today;
-                });
-
-                const ticker = document.getElementById('eventTicker');
-                
-                if (upcomingEvents.length === 0) {
-                    ticker.innerHTML = '<div style="font-size: 1.1rem; line-height: 30px;">Check back soon for new event dates!</div>';
-                    return;
+            function csvToRows(csv) {
+                const rows = [];
+                let row = [], field = '', inQuotes = false;
+                for (let i = 0; i < csv.length; i++) {
+                    const ch = csv[i], next = csv[i+1];
+                    if (ch === '"') { if (inQuotes && next === '"') { field += '"'; i++; } else inQuotes = !inQuotes; }
+                    else if (ch === ',' && !inQuotes) { row.push(field.trim()); field = ''; }
+                    else if ((ch === '\n' || ch === '\r') && !inQuotes) {
+                        if (ch === '\r' && next === '\n') i++;
+                        row.push(field.trim());
+                        if (row.some(f => f)) rows.push(row);
+                        row = []; field = '';
+                    } else { field += ch; }
                 }
-
-                // Create all event items
-                let eventHTML = '';
-                const isMobile = window.innerWidth <= 768;
-                
-                upcomingEvents.forEach(event => {
-                    const [year, month, day] = event.date.split('-').map(Number);
-                    const eventDate = new Date(year, month - 1, day);
-                    const dateStr = eventDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-                    
-                    if (isMobile) {
-                        // Mobile: Two lines
-                        eventHTML += `<div style="font-size: 0.95rem; line-height: 1.3; height: 50px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 0 0.5rem;">
-                            <div><strong>${dateStr}</strong></div>
-                            <div>${event.time} | ${event.location}</div>
-                        </div>`;
-                    } else {
-                        // Desktop: One line
-                        eventHTML += `<div style="font-size: 1.1rem; line-height: 30px; height: 30px;"><strong>${dateStr}</strong> ${event.time} | ${event.location}</div>`;
-                    }
-                });
-                
-                ticker.innerHTML = eventHTML;
-                
-                // Start rotation
-                startRotation();
+                if (field || row.length) { row.push(field.trim()); if (row.some(f => f)) rows.push(row); }
+                return rows.slice(1);
             }
 
-            function startRotation() {
-                if (upcomingEvents.length <= 1) return;
-                
-                const isMobile = window.innerWidth <= 768;
-                const itemHeight = isMobile ? 50 : 30;
-                
-                setInterval(() => {
-                    currentIndex = (currentIndex + 1) % upcomingEvents.length;
+            async function initTicker() {
+                try {
+                    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Events`;
+                    const rows = csvToRows(await (await fetch(url)).text());
+                    const today = new Date(); today.setHours(0,0,0,0);
+                    const upcomingEvents = rows.filter(r => {
+                        const [y,m,d] = r[0].split('-').map(Number);
+                        return new Date(y,m-1,d) >= today;
+                    });
+
                     const ticker = document.getElementById('eventTicker');
-                    ticker.style.transform = `translateY(-${currentIndex * itemHeight}px)`;
-                }, 3000); // Change event every 3 seconds
+                    if (!upcomingEvents.length) {
+                        ticker.innerHTML = '<div style="font-size: 1.1rem; line-height: 30px;">Check back soon for new event dates!</div>';
+                        return;
+                    }
+
+                    const isMobile = window.innerWidth <= 768;
+                    ticker.innerHTML = upcomingEvents.map(r => {
+                        const [y,m,d] = r[0].split('-').map(Number);
+                        const dateStr = new Date(y,m-1,d).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+                        if (isMobile) {
+                            return `<div style="font-size:0.95rem;line-height:1.3;height:50px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 0.5rem;"><div><strong>${dateStr}</strong></div><div>${r[1]} | ${r[2]}</div></div>`;
+                        }
+                        return `<div style="font-size:1.1rem;line-height:30px;height:30px;"><strong>${dateStr}</strong> ${r[1]} | ${r[2]}</div>`;
+                    }).join('');
+
+                    if (upcomingEvents.length > 1) {
+                        let idx = 0;
+                        const itemHeight = isMobile ? 50 : 30;
+                        setInterval(() => {
+                            idx = (idx + 1) % upcomingEvents.length;
+                            ticker.style.transform = `translateY(-${idx * itemHeight}px)`;
+                        }, 3000);
+                    }
+                } catch(e) {
+                    document.getElementById('eventTicker').innerHTML = '<div style="font-size:1.1rem;line-height:30px;">Check back soon for new event dates!</div>';
+                }
             }
 
-            // Update on page load
-            updateEventTicker();
+            initTicker();
         </script>
     </div>
 
     <main>
-        <!-- Alert Banner -->
-        <div id="smv-alert-banner" style="background: #fff3cd; border-top: 4px solid #ff6b35; border-bottom: 4px solid #ff6b35; padding: 1.5rem 0;">
+        <!-- Alert Banner - driven by Google Sheet -->
+        <div id="smv-alert-banner" style="display:none; background: #fff3cd; border-top: 4px solid #ff6b35; border-bottom: 4px solid #ff6b35; padding: 1.5rem 0;">
             <div class="container">
                 <div style="display: flex; align-items: flex-start; gap: 1rem; flex-wrap: wrap;">
                     <div style="font-size: 2rem; line-height: 1;">📢</div>
                     <div style="flex: 1; min-width: 260px;">
-                        <p style="font-weight: 700; font-size: 1.15rem; color: #ff6b35; margin-bottom: 0.4rem;">Linn County Planning & Zoning Commission — Monday, July 20 at 6 p.m.</p>
-                        <p style="font-size: 1rem; color: #333; margin-bottom: 0.5rem;">The Planning & Zoning Commission must approve rezoning the proposed plant site for industrial use before the Morgan Valley Energy Center can move forward. Show up and make your voice heard.</p>
-                        <p style="font-size: 0.95rem; color: #555; margin: 0;"><strong>📍 Where:</strong> Jean Oxley Linn County Public Service Center, 935 2nd St. SW, Cedar Rapids</p>
+                        <p style="font-weight: 700; font-size: 1.15rem; color: #ff6b35; margin-bottom: 0.4rem;" id="banner-title"></p>
+                        <p style="font-size: 1rem; color: #333; margin-bottom: 0.5rem;" id="banner-body"></p>
+                        <p style="font-size: 0.95rem; color: #555; margin: 0;" id="banner-where"></p>
                     </div>
                 </div>
             </div>
         </div>
+        <script>
+            (async function loadBanner() {
+                try {
+                    const SHEET_ID = '1KfYBtVnwkE4kbRSR1VpPrnjbkLjnax1qILeg_xHf8QQ';
+                    function csvToRows(csv) {
+                        const rows = []; let row = [], field = '', inQuotes = false;
+                        for (let i = 0; i < csv.length; i++) {
+                            const ch = csv[i], next = csv[i+1];
+                            if (ch === '"') { if (inQuotes && next === '"') { field += '"'; i++; } else inQuotes = !inQuotes; }
+                            else if (ch === ',' && !inQuotes) { row.push(field.trim()); field = ''; }
+                            else if ((ch === '\n' || ch === '\r') && !inQuotes) {
+                                if (ch === '\r' && next === '\n') i++;
+                                row.push(field.trim()); if (row.some(f => f)) rows.push(row); row = []; field = '';
+                            } else { field += ch; }
+                        }
+                        if (field || row.length) { row.push(field.trim()); if (row.some(f => f)) rows.push(row); }
+                        return rows.slice(1);
+                    }
+                    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Banner`;
+                    const rows = csvToRows(await (await fetch(url)).text());
+                    if (!rows.length) return;
+                    const [active, title, body, where] = rows[0];
+                    if (active.toLowerCase() !== 'yes') return;
+                    document.getElementById('banner-title').textContent = title;
+                    document.getElementById('banner-body').textContent = body;
+                    if (where) document.getElementById('banner-where').innerHTML = '<strong>📍 Where:</strong> ' + where;
+                    document.getElementById('smv-alert-banner').style.display = 'block';
+                } catch(e) { console.error('Banner error:', e); }
+            })();
+        </script>
         <section class="hero-image">
             <div class="hero-overlay" style="background: rgba(0, 0, 0, 0.7);">
                 <div class="container" style="display: flex; align-items: center; justify-content: space-between; gap: 3rem; padding: 2.5rem 1rem; flex-wrap: wrap;">
