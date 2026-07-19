@@ -87,25 +87,32 @@
         const SHEET_ID = '1KfYBtVnwkE4kbRSR1VpPrnjbkLjnax1qILeg_xHf8QQ';
 
         function csvToRows(csv) {
-            return csv.trim().split('\n').slice(1).map(row => {
-                // Handle quoted CSV fields
-                const fields = [];
-                let current = '';
-                let inQuotes = false;
-                for (let i = 0; i < row.length; i++) {
-                    const ch = row[i];
-                    if (ch === '"') {
-                        inQuotes = !inQuotes;
-                    } else if (ch === ',' && !inQuotes) {
-                        fields.push(current.trim());
-                        current = '';
-                    } else {
-                        current += ch;
-                    }
+            // Robust CSV parser handling multi-line quoted fields
+            const rows = [];
+            let row = [];
+            let field = '';
+            let inQuotes = false;
+            for (let i = 0; i < csv.length; i++) {
+                const ch = csv[i];
+                const next = csv[i + 1];
+                if (ch === '"') {
+                    if (inQuotes && next === '"') { field += '"'; i++; }
+                    else inQuotes = !inQuotes;
+                } else if (ch === ',' && !inQuotes) {
+                    row.push(field.trim());
+                    field = '';
+                } else if ((ch === '\n' || ch === '\r') && !inQuotes) {
+                    if (ch === '\r' && next === '\n') i++;
+                    row.push(field.trim());
+                    if (row.some(f => f)) rows.push(row);
+                    row = [];
+                    field = '';
+                } else {
+                    field += ch;
                 }
-                fields.push(current.trim());
-                return fields;
-            }).filter(r => r.some(f => f));
+            }
+            if (field || row.length) { row.push(field.trim()); if (row.some(f => f)) rows.push(row); }
+            return rows.slice(1); // skip header
         }
 
         async function fetchSheet(tab) {
