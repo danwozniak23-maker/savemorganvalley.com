@@ -184,22 +184,72 @@
                 today.setHours(0,0,0,0);
 
                 const upcoming = rows.filter(r => {
-                    const [year, month, day] = r[1].split('-').map(Number);
+                    const [year, month, day] = r[2].split('-').map(Number);
                     return new Date(year, month-1, day) >= today;
                 });
 
                 const el = document.getElementById('meetingsContent');
                 if (upcoming.length === 0) {
                     el.innerHTML = '<p style="color:#666;">No upcoming meetings listed.</p>';
-                } else {
-                    el.innerHTML = upcoming.map(r => `
-                        <div style="background:white;padding:1.5rem;margin:0.75rem 0;border-radius:8px;border-left:5px solid #ff6b35;box-shadow:0 2px 10px rgba(0,0,0,0.1);">
-                            <p style="font-weight:bold;color:#ff6b35;font-size:1.05rem;margin-bottom:0.25rem;">${r[0]}</p>
-                            <p style="color:#333;margin-bottom:0.25rem;">${formatDate(r[1])} at ${r[2]}</p>
-                            <p style="color:#666;margin:0;font-size:0.95rem;">${r[3]}</p>
-                        </div>
-                    `).join('');
+                    return;
                 }
+
+                // Group by Body
+                const grouped = {};
+                upcoming.forEach(r => {
+                    const body = r[0], subtype = r[1], date = r[2], time = r[3], location = r[4];
+                    if (!grouped[body]) grouped[body] = { location, rows: [], subtypes: {} };
+                    if (subtype) {
+                        if (!grouped[body].subtypes[subtype]) grouped[body].subtypes[subtype] = [];
+                        grouped[body].subtypes[subtype].push({ date, time });
+                    } else {
+                        grouped[body].rows.push({ date, time });
+                    }
+                });
+
+                const bodyLinks = {
+                    'Linn County Board of Supervisors': 'https://www.linncountyiowa.gov/123/Board-of-Supervisors',
+                    'Cedar Rapids City Council': 'https://cedar-rapids.org/local_government/city_council/city_council_meetings/index.php',
+                    'Linn County Planning & Zoning': 'https://www.linncountyiowa.gov/1218/Planning-Zoning-Commission'
+                };
+
+                const bodyNotes = {
+                    'Linn County Planning & Zoning': 'The Planning & Zoning Commission must approve rezoning the proposed plant site for industrial use before the project can move forward.'
+                };
+
+                el.innerHTML = Object.entries(grouped).map(([body, data]) => {
+                    const link = bodyLinks[body] ? `<a href="${bodyLinks[body]}" target="_blank" rel="noopener" style="color:#ff6b35;font-size:0.95rem;">${new URL(bodyLinks[body]).hostname}</a>` : '';
+                    const note = bodyNotes[body] ? `<p style="font-size:0.9rem;color:#666;margin-top:1rem;font-style:italic;">${bodyNotes[body]}</p>` : '';
+
+                    // Subtypes = two-column layout (Supervisors Work/Formal)
+                    let datesHtml = '';
+                    if (Object.keys(data.subtypes).length > 0) {
+                        const cols = Object.entries(data.subtypes).map(([subtype, dates]) => `
+                            <div>
+                                <h4 style="color:#ff6b35;margin-bottom:1rem;">${subtype}s — ${dates[0].time}</h4>
+                                <ul style="list-style:none;padding:0;font-size:1rem;line-height:2;">
+                                    ${dates.map(d => `<li>${formatDate(d.date)}</li>`).join('')}
+                                </ul>
+                            </div>
+                        `).join('');
+                        datesHtml = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;flex-wrap:wrap;">${cols}</div>`;
+                    } else {
+                        datesHtml = `<ul style="list-style:none;padding:0;font-size:1rem;line-height:2;">
+                            ${data.rows.map(d => `<li>${formatDate(d.date)} at ${d.time}</li>`).join('')}
+                        </ul>`;
+                    }
+
+                    return `
+                        <div class="info-box" style="margin:2rem 0;">
+                            <h3 style="color:#ff6b35;font-size:1.8rem;margin-bottom:0.5rem;">${body}</h3>
+                            <p style="color:#666;margin-bottom:0.25rem;">${data.location}</p>
+                            <p style="margin-bottom:2rem;">${link}</p>
+                            ${datesHtml}
+                            ${note}
+                        </div>
+                    `;
+                }).join('');
+
             } catch(e) { console.error('Meetings error:', e); }
         }
 
