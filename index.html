@@ -102,12 +102,12 @@
                     ticker.innerHTML = upcomingEvents.map(r => {
                         const [y,m,d] = r[0].split('-').map(Number);
                         const dateStr = new Date(y,m-1,d).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-                        const title = r[2] ? r[2] + ' | ' : '';
-                        const city = r[3] ? ' | ' + r[3] : '';
+                        const title = r[2] ? ' | ' + r[2] : '';
+                        const location = r[4] ? ' | ' + r[4] : '';
                         if (isMobile) {
-                            return `<div style="font-size:0.95rem;line-height:1.3;height:50px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 0.5rem;"><div><strong>${dateStr}</strong></div><div>${title}${r[1]}${city}</div></div>`;
+                            return `<div style="font-size:0.95rem;line-height:1.3;height:50px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0 0.5rem;"><div><strong>${dateStr}</strong></div><div>${r[1]}${title}${location}</div></div>`;
                         }
-                        return `<div style="font-size:1.1rem;line-height:30px;height:30px;"><strong>${dateStr}</strong> — ${title}${r[1]}${city}</div>`;
+                        return `<div style="font-size:1.1rem;line-height:30px;height:30px;"><strong>${dateStr}</strong> | ${r[1]}${title}${location}</div>`;
                     }).join('');
 
                     if (upcomingEvents.length > 1) {
